@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-R3capApplication<R3cap>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "it.uniroma3.siw.R3cap.R3capApplication",
+            "projectName": "R3cap",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
