@@ -3,13 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Benvenuto su R3cap</title>
-    <link rel="stylesheet" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
 </head>
 <body>
-    <h1 style="display: flex; align-items: center; gap: 10px;">
+
+    <!-- Profilo utente in alto a destra (solo se loggato) -->
+    <div class="user-profile" th:if="${utente != null}">
+        <a th:href="@{/profilo}">
+            <img th:src="@{${utente.immagineProfilo}}" alt="Profilo" class="profile-pic" />
+            <div class="user-name" th:text="${utente.nome + ' ' + utente.cognome}"></div>
+        </a>
+    </div>
+
+    <!-- Titolo -->
+    <h1>
         Benvenuto su
         <img th:src="@{/media/logo.png}" alt="Logo R3cap" style="height: 200px;" />
     </h1>
-    <a th:href="@{/upload.html}">📚 Carica un Appunto</a>
+
+    <!-- Corso di studi (solo se loggato) -->
+    <p th:if="${utente != null}" th:text="'Il tuo corso di studi: ' + ${corsoDiStudi}" style="font-size: 1.2em; margin-top: -20px;"></p>
+
+    <!-- Messaggio e pulsanti per utenti non loggati -->
+    <div th:if="${utente == null}" class="access-warning">
+        <p>Per consultare e caricare appunti su R3cap è necessario accedere</p>
+        <div class="auth-buttons">
+            <a th:href="@{/register}" class="btn-auth">Registrati</a>
+            <a th:href="@{/login}" class="btn-auth">Accedi</a>
+        </div>
+    </div>
+
 </body>
 </html>

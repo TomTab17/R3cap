@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #003366, #0059b3);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: relative;
+    padding: 0 20px;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+a {
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #003366;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+a:hover {
+    background-color: #e0e0e0;
+    color: #001f4d;
+}
+
+/* Profilo utente in alto a destra */
+.user-profile {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-align: center;
+    color: white;
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    background-color: white;
+}
+
+.user-name {
+    font-size: 0.9em;
+    margin-top: 5px;
+    color: white;
+}
+
+/* Messaggio e pulsanti per non loggati */
+.access-warning {
+    text-align: center;
+    margin-top: 40px; /* Spazio tra il titolo e il riquadro */
+    font-size: 1.2rem; /* Lato testo */
+    color: #ffffff;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.6); /* Sfondo scuro con trasparenza */
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Ombra per dare profondità */
+    max-width: 700px; /* Aumento della larghezza */
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Manteniamo l'altezza dinamica */
+}
+
+.auth-buttons {
+    margin-top: 20px; /* Maggiore distanza tra il testo e i pulsanti */
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.btn-auth {
+    background-color: #ffffff;
+    color: #003366;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-auth:hover {
+    background-color: #e0e0e0;
+    color: #001f4d;
+    transform: translateY(-4px); /* Effetto spostamento verso l'alto */
+}
+
+.btn-auth:active {
+    background-color: #0059b3;
+    color: white;
+    transform: translateY(2px); /* Leggero spostamento verso il basso */
+}

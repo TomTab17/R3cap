@@ -1,6 +1,5 @@
 package it.uniroma3.siw.R3cap.controller;
 
-
 import it.uniroma3.siw.R3cap.model.User;
 import it.uniroma3.siw.R3cap.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +27,29 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password) {
+    public String register(
+            @RequestParam String nome,
+            @RequestParam String cognome,
+            @RequestParam String username,
+            @RequestParam String email,
+            @RequestParam String password,
+            @RequestParam String corsoDiStudi,
+            @RequestParam boolean disponibileRipetizioni) {
+
+        // Creazione di un nuovo oggetto User
         User user = new User();
         user.setUsername(username);
-        user.setPassword(encoder.encode(password));
+        user.setPassword(encoder.encode(password));  // Cripta la password
+        user.setEmail(email);
+        user.setNome(nome);
+        user.setCognome(cognome);
+        user.setCorsoDiStudi(corsoDiStudi);
+        user.setDisponibileRipetizioni(disponibileRipetizioni);
+
+        // Salvataggio dell'utente nel database
         userRepository.save(user);
+
+        // Reindirizza alla pagina di login con messaggio di successo
         return "redirect:/login?success";
     }
 }
