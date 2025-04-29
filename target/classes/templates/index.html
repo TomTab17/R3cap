@@ -6,7 +6,10 @@
     <link rel="stylesheet" th:href="@{/css/home.css}" />
 </head>
 <body>
-    <h1>Benvenuto su R3cap</h1>
+    <h1 style="display: flex; align-items: center; gap: 10px;">
+        Benvenuto su
+        <img th:src="@{/media/logo.png}" alt="Logo R3cap" style="height: 200px;" />
+    </h1>
     <a th:href="@{/upload.html}">📚 Carica un Appunto</a>
 </body>
 </html>
