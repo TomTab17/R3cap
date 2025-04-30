@@ -10,7 +10,8 @@
     <!-- Profilo utente in alto a destra (solo se loggato) -->
     <div class="user-profile" th:if="${utente != null}">
         <a th:href="@{/profilo}">
-            <img th:src="@{${utente.immagineProfilo}}" alt="Profilo" class="profile-pic" />
+            <!--<img th:src="@{${utente.immagineProfilo}}" alt="Profilo" class="profile-pic" /> -->
+            <img th:src="@{/media/default-profile.png}" alt="Profilo" class="profile-pic" />
             <div class="user-name" th:text="${utente.nome + ' ' + utente.cognome}"></div>
         </a>
     </div>
