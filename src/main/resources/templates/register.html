@@ -8,6 +8,9 @@
     <div class="form-container">
         <h2>Registrazione</h2>
         <form action="/register" method="post">
+            <!-- Token CSRF -->
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+
             <input type="text" name="nome" placeholder="Nome" required>
             <input type="text" name="cognome" placeholder="Cognome" required>
             <input type="text" name="username" placeholder="Username" required>
