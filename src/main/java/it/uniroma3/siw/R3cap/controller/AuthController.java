@@ -34,9 +34,8 @@ public class AuthController {
             @RequestParam String email,
             @RequestParam String password,
             @RequestParam String corsoDiStudi,
-            @RequestParam boolean disponibileRipetizioni) {
+            @RequestParam(name = "disponibileRipetizioni", defaultValue = "false") boolean disponibileRipetizioni) {
 
-        // Creazione di un nuovo oggetto User
         User user = new User();
         user.setUsername(username);
         user.setPassword(encoder.encode(password));  // Cripta la password
@@ -45,11 +44,12 @@ public class AuthController {
         user.setCognome(cognome);
         user.setCorsoDiStudi(corsoDiStudi);
         user.setDisponibileRipetizioni(disponibileRipetizioni);
+        user.setRole("USER");
 
-        // Salvataggio dell'utente nel database
+        System.out.println("Registrazione utente: " + user.getUsername()); // Debug
+
         userRepository.save(user);
 
-        // Reindirizza alla pagina di login con messaggio di successo
         return "redirect:/login?success";
     }
 }
