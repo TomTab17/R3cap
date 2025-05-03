@@ -3,7 +3,7 @@ package it.uniroma3.siw.R3cap.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")  // "user" è riservato in alcuni DB (come PostgreSQL)
+@Table(name = "users")
 public class User {
 
     @Id
@@ -16,8 +16,10 @@ public class User {
     private String nome;
     private String cognome;
     private String corsoDiStudi;
-    private boolean disponibileRipetizioni;  // Flag per disponibilità ripetizioni
-    private String role = "USER";  // ruolo di default
+    private boolean disponibileRipetizioni;
+    private String role = "USER";
+
+    private String immagineProfilo;
 
     // Getters e setters
     public Long getId() { return id; }
@@ -46,4 +48,7 @@ public class User {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    public String getImmagineProfilo() { return immagineProfilo; }
+    public void setImmagineProfilo(String immagineProfilo) { this.immagineProfilo = immagineProfilo; }
 }

@@ -34,19 +34,21 @@ public class AuthController {
             @RequestParam String email,
             @RequestParam String password,
             @RequestParam String corsoDiStudi,
-            @RequestParam(name = "disponibileRipetizioni", defaultValue = "false") boolean disponibileRipetizioni) {
+            @RequestParam(name = "disponibileRipetizioni", defaultValue = "false") boolean disponibileRipetizioni,
+            @RequestParam(name = "immagineProfilo", required = false) String immagineProfilo) {
 
         User user = new User();
         user.setUsername(username);
-        user.setPassword(encoder.encode(password));  // Cripta la password
+        user.setPassword(encoder.encode(password));
         user.setEmail(email);
         user.setNome(nome);
         user.setCognome(cognome);
         user.setCorsoDiStudi(corsoDiStudi);
         user.setDisponibileRipetizioni(disponibileRipetizioni);
+        user.setImmagineProfilo(immagineProfilo);  // <--- AGGIUNTO
         user.setRole("USER");
 
-        System.out.println("Registrazione utente: " + user.getUsername()); // Debug
+        System.out.println("Registrazione utente: " + user.getUsername() + ", immagine: " + immagineProfilo); // Debug
 
         userRepository.save(user);
 
