@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -19,9 +20,14 @@ public class HomeController {
     public String home(Model model, Principal principal) {
         if (principal != null) {
             String username = principal.getName();
-            User utente = userRepository.findByUsername(username);
-            model.addAttribute("utente", utente);
-            model.addAttribute("corsoDiStudi", utente.getCorsoDiStudi());
+            Optional<User> optionalUtente = userRepository.findByUsername(username);
+            if (optionalUtente.isPresent()) {
+                User utente = optionalUtente.get();
+                model.addAttribute("utente", utente);
+                model.addAttribute("corsoDiStudi", utente.getCorsoDiStudi());
+            } else {
+                model.addAttribute("utente", null);
+            }
         } else {
             model.addAttribute("utente", null); // Se non loggato, utente è null
         }

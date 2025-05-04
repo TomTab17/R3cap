@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -17,19 +18,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        Optional<User> optionalUser = userRepository.findByUsername(username);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
+        User user = optionalUser.orElseThrow(() ->
+                new UsernameNotFoundException("User not found"));
 
         System.out.println("User found: " + user.getUsername()); // Log per il debug
 
-        // Restituisce l'utente con il suo ruolo
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))  // Aggiungi il ruolo
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
         );
     }
 }

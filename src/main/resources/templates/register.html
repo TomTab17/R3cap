@@ -7,6 +7,12 @@
 <body>
     <div class="form-container">
         <h2>Registrazione</h2>
+
+        <!-- Messaggio di errore -->
+        <div th:if="${error}" style="color: red;">
+            <p th:text="${error}"></p>
+        </div>
+
         <form action="/register" method="post">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
 
@@ -15,7 +21,7 @@
             <input type="text" name="username" placeholder="Username" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
-            
+
             <select name="corsoDiStudi" required>
                 <option value="Informatica">Ingegneria informatica</option>
                 <option value="Ingegneria">Ingegneria</option>
@@ -50,7 +56,6 @@
     </div>
 
     <script>
-        // Script per la selezione dell'avatar
         const avatarOptions = document.querySelectorAll('.avatar-option');
         const selectedAvatar = document.getElementById('selected-avatar');
         const hiddenInput = document.getElementById('immagineProfilo');

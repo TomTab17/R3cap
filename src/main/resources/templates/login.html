@@ -7,7 +7,17 @@
 
 <h2>Login</h2>
 
-<form action="/login" method="post">
+<!-- Messaggio di successo (dopo la registrazione) -->
+<div th:if="${successMessage}" style="color: green;">
+    <p th:text="${successMessage}"></p>
+</div>
+
+<!-- Messaggio di errore in caso di login fallito -->
+<div th:if="${param.error}" style="color: red;">
+    <p>Credenziali non valide. Riprova.</p>
+</div>
+
+<form th:action="@{/login}" method="post">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required><br><br>
 
