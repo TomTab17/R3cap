@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #003366, #0059b3);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.form-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 2px solid #003366;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #003366;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    min-height: 45px;
+}
+
+input:focus {
+    border-color: #0059b3;
+    outline: none;
+}
+
+button {
+    background-color: #003366;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    margin-top: 18px;
+}
+
+button:hover {
+    background-color: #0059b3;
+    transform: translateY(-4px);
+}
+
+button:active {
+    background-color: #001f4d;
+    transform: translateY(2px);
+}
+
+.message {
+    margin: 10px 0;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.message.success {
+    color: #7CFC00;
+}
+
+.message.error {
+    color: #FF6347;
+}
+
+/* Media Query per dispositivi mobili */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    input, button {
+        font-size: 0.95rem;
+    }
+}
