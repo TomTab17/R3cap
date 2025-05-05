@@ -7,39 +7,50 @@
 </head>
 <body>
 
-    <!-- Profilo utente in alto a destra (solo se loggato) -->
-    <div class="user-profile" th:if="${utente != null}">
-        <a th:href="@{/profile}">
-            <!-- Se l'utente ha un'immagine di profilo, la mostriamo -->
-            <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}" alt="Profilo" class="profile-pic" />
-            <div class="user-name">
-                <div class="user-first-name" th:text="${utente.nome}"></div>
-                <div class="user-last-name" th:text="${utente.cognome}"></div>
-            </div>
-        </a>
-
-        <!-- Pulsante Logout -->
-        <form th:action="@{/logout}" method="post" class="logout-form">
-            <button type="submit" class="logout-button">Logout</button>
-        </form>
-    </div>
-
     <!-- Titolo -->
     <h1>
         Benvenuto su
-        <img th:src="@{/media/logo.png}" alt="Logo R3cap" style="height: 200px;" />
+        <img th:src="@{/media/logo.png}" alt="Logo R3cap" style="height: 250px;" />
     </h1>
 
-    <!-- Corso di studi (solo se loggato) -->
-    <p th:if="${utente != null}" th:text="'Il tuo corso di studi: ' + ${corsoDiStudi}" style="font-size: 1.2em; margin-top: -20px;"></p>
-
-    <!-- Messaggio e pulsanti per utenti non loggati -->
+    <!-- Messaggio per utenti non loggati -->
     <div th:if="${utente == null}" class="access-warning">
         <p>Per consultare e caricare appunti su R3cap è necessario accedere</p>
         <div class="auth-buttons">
             <a th:href="@{/register}" class="btn-auth">Registrati</a>
             <a th:href="@{/login}" class="btn-auth">Accedi</a>
         </div>
+    </div>
+
+    <!-- Profilo utente in alto a destra (solo se loggato) -->
+    <div class="user-profile" th:if="${utente != null}">
+        <a th:href="@{/profile}">
+            <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}" alt="Profilo" class="profile-pic" />
+            <div class="user-name">
+                <div class="user-first-name" th:text="${utente.nome}"></div>
+                <div class="user-last-name" th:text="${utente.cognome}"></div>
+            </div>
+        </a>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </div>
+
+    <!-- Corso di studi (solo se loggato) -->
+    <p th:if="${utente != null}" th:text="'Il tuo corso di studi: ' + ${corsoDiStudi}" class="corso-di-studi"></p>
+
+    <!-- Form di ricerca (solo se loggato) -->
+    <div class="search-form" th:if="${utente != null}">
+        <input type="text" class="search-input" placeholder="Cerca il tuo R3cap 📚" />
+        <button type="button" class="search-button">🔍</button>
+    </div>
+
+    <!-- Ricerca avanzata - visibile solo se loggato -->
+    <div class="advanced-search-box" th:if="${utente != null}">
+        <span class="advanced-search-text">Vuoi ricercare in altri corsi di studio?</span>
+        <a th:href="@{/ricerca-avanzata}" class="btn-advanced-search">
+            🧐 Ricerca avanzata
+        </a>
     </div>
 
 </body>
