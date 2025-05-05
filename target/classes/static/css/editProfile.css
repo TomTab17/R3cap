@@ -1,0 +1,145 @@
+/* editProfile.css */
+
+/* Container del form di modifica */
+.profile-container {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Titolo */
+.profile-container h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Campi di input */
+form input[type="text"],
+form input[type="email"],
+form input[type="checkbox"] {
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* Pulsante per invio */
+form button[type="submit"] {
+    padding: 12px 20px;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Pulsante Annulla */
+a.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+a.back-button:hover {
+    background-color: #0056b3;
+}
+
+/* Selezione avatar */
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.custom-dropdown .dropdown-selected {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.custom-dropdown .dropdown-selected img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.custom-dropdown .dropdown-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    z-index: 10;
+}
+
+.custom-dropdown .dropdown-options.show {
+    display: block;
+}
+
+.custom-dropdown .avatar-option {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.custom-dropdown .avatar-option:hover {
+    background-color: #f1f1f1;
+}
+
+.custom-dropdown .avatar-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Responsività */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 20px;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="checkbox"] {
+        font-size: 14px;
+    }
+
+    form button[type="submit"] {
+        font-size: 14px;
+    }
+}

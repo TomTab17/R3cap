@@ -1,40 +1,32 @@
 <!DOCTYPE html>
-<html lang="it">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina in Costruzione</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
-            text-align: center;
-        }
-
-        .message {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ff4500;
-        }
-
-        .icon {
-            font-size: 4rem;
-            margin-top: 20px;
-            color: #ff4500;
-        }
-    </style>
+    <title>Profilo di <span th:text="${utente.nome} + ' ' + ${utente.cognome}"></span></title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}" />
 </head>
 <body>
 
-    <div class="content">
-        <div class="message">In costruzione...</div>
-        <div class="icon">🚧</div>
+    <!-- Profilo utente -->
+    <div class="profile-container">
+        <div class="profile-header">
+            <!-- Immagine Profilo -->
+            <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}"
+                 alt="Immagine Profilo" class="profile-pic-large" />
+
+            <div class="profile-details">
+                <h2 class="user-name" th:text="${utente.nome} + ' ' + ${utente.cognome}"></h2>
+                <p><strong>Email:</strong> <span th:text="${utente.email}"></span></p>
+                <p><strong>Corso di Studi:</strong> <span th:text="${utente.corsoDiStudi}"></span></p>
+                <p><strong>Disponibile per ripetizioni:</strong>
+                    <span th:text="${utente.disponibileRipetizioni ? 'Sì' : 'No'}"></span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Pulsanti -->
+        <a href="/" class="back-button">Torna alla Home</a>
+        <a th:href="@{/profile/edit}" class="edit-button">Modifica Profilo</a>
     </div>
 
 </body>

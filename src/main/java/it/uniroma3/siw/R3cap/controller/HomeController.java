@@ -5,7 +5,7 @@ import it.uniroma3.siw.R3cap.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -29,9 +29,56 @@ public class HomeController {
                 model.addAttribute("utente", null);
             }
         } else {
-            model.addAttribute("utente", null); // Se non loggato, utente è null
+            model.addAttribute("utente", null);
         }
         return "index";
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model, Principal principal) {
+        if (principal != null) {
+            String username = principal.getName();
+            Optional<User> optionalUtente = userRepository.findByUsername(username);
+            if (optionalUtente.isPresent()) {
+                model.addAttribute("utente", optionalUtente.get());
+            }
+        }
+        return "profile";
+    }
+
+    @GetMapping("/profile/edit")
+    public String editProfileForm(Model model, Principal principal) {
+        if (principal != null) {
+            Optional<User> optionalUtente = userRepository.findByUsername(principal.getName());
+            optionalUtente.ifPresent(user -> model.addAttribute("utente", user));
+        }
+        return "editProfile";
+    }
+
+    @PostMapping("/profile/edit")
+    public String editProfileSubmit(
+            @RequestParam String nome,
+            @RequestParam String cognome,
+            @RequestParam String email,
+            @RequestParam String corsoDiStudi,
+            @RequestParam(required = false) boolean disponibileRipetizioni,
+            @RequestParam(required = false) String immagineProfilo,
+            Principal principal) {
+
+        if (principal != null) {
+            Optional<User> optionalUtente = userRepository.findByUsername(principal.getName());
+            if (optionalUtente.isPresent()) {
+                User user = optionalUtente.get();
+                user.setNome(nome);
+                user.setCognome(cognome);
+                user.setEmail(email);
+                user.setCorsoDiStudi(corsoDiStudi);
+                user.setDisponibileRipetizioni(disponibileRipetizioni);
+                user.setImmagineProfilo(immagineProfilo != null ? immagineProfilo : null);
+                userRepository.save(user);
+            }
+        }
+        return "redirect:/profile";
     }
 
     @GetMapping("/upload.html")

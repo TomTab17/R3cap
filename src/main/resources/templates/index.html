@@ -9,7 +9,7 @@
 
     <!-- Profilo utente in alto a destra (solo se loggato) -->
     <div class="user-profile" th:if="${utente != null}">
-        <a th:href="@{/profilo}">
+        <a th:href="@{/profile}">
             <!-- Se l'utente ha un'immagine di profilo, la mostriamo -->
             <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}" alt="Profilo" class="profile-pic" />
             <div class="user-name">
@@ -17,6 +17,11 @@
                 <div class="user-last-name" th:text="${utente.cognome}"></div>
             </div>
         </a>
+
+        <!-- Pulsante Logout -->
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
     </div>
 
     <!-- Titolo -->

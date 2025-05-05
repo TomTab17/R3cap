@@ -1,0 +1,97 @@
+/* profile.css */
+
+/* Container del profilo */
+.profile-container {
+    font-family: 'Arial', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* Intestazione del profilo */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Immagine del profilo */
+.profile-pic-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+/* Dettagli del profilo */
+.profile-details {
+    flex-grow: 1;
+}
+
+.profile-details h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+}
+
+.profile-details p {
+    font-size: 16px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.profile-details strong {
+    color: #333;
+}
+
+/* Pulsanti */
+.back-button,
+.edit-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.back-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+.edit-button {
+    background-color: #28a745;
+    color: white;
+    margin-left: 10px;
+}
+
+.edit-button:hover {
+    background-color: #218838;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-pic-large {
+        margin-bottom: 20px;
+    }
+}
