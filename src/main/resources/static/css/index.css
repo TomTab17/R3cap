@@ -237,6 +237,12 @@ a:hover {
   color: #003366;
   cursor: pointer;
   margin-left: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Aggiunta transizione per ingrandimento e ombra */
+}
+
+.search-button:hover {
+  transform: scale(1.2); /* Ingrandisce il bottone al passaggio del mouse */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Aggiunge un'ombra per farlo risaltare */
 }
 
 /* Ricerca Avanzata - più piccola */
