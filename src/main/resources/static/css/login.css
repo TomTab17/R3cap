@@ -11,6 +11,31 @@ body {
     height: 100vh;
 }
 
+.logo-container {
+    position: relative;
+    width: 350px; /* Aumentato per dare più spazio al logo */
+    height: 120px; /* Maggiore altezza per il logo */
+    margin-bottom: 20px; /* Spazio tra il logo e il form */
+    z-index: 1;
+    background-color: white; /* Riquadro bianco per il logo */
+    padding: 10px; /* Padding per il logo */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombra più leggera */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centra il logo verticalmente e orizzontalmente */
+    border-radius: 10px; /* Angoli arrotondati */
+}
+
+.logo {
+    width: 70%; /* Aumentato per far crescere il logo all'interno */
+    height: auto; /* Mantieni il rapporto di aspetto */
+    transition: transform 0.3s ease-in-out;
+}
+
+.logo:hover {
+    transform: scale(1.05); /* Leggero ingrandimento quando il logo è hoverato */
+}
+
 .form-container {
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 20px;
@@ -19,6 +44,8 @@ body {
     width: 100%;
     max-width: 400px;
     text-align: center;
+    position: relative; /* Necessario per il posizionamento del logo */
+    z-index: 0; /* Form è sotto al logo */
 }
 
 h2 {

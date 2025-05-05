@@ -6,8 +6,13 @@
 </head>
 <body>
 
+<!-- Aggiungi l'immagine del logo sopra il form con l'effetto di contrasto -->
+<div class="logo-container">
+    <img th:src="@{/media/logo.png}" alt="Logo" class="logo">
+</div>
+
 <div class="form-container">
-    <h2>Login</h2>
+    <h2>Please sign in</h2>
 
     <!-- Messaggio di successo (dopo la registrazione) -->
     <div th:if="${successMessage}" class="message success">
@@ -26,7 +31,7 @@
 
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-        <button type="submit">Login</button>
+        <button type="submit">LOGIN</button>
     </form>
 </div>
 
