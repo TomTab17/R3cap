@@ -16,6 +16,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/notes")
@@ -27,14 +28,24 @@ public class NoteController {
     @Autowired
     private UserRepository userRepository;
 
+    // Metodo per ottenere l'utente autenticato
+    private Optional<User> getAuthenticatedUser(Principal principal) {
+        if (principal == null) {
+            return Optional.empty();
+        }
+        return userRepository.findByUsername(principal.getName());
+    }
+
+    // Mostra il form di upload
     @GetMapping("/upload")
     public String showUploadForm(Principal principal) {
         if (principal == null) {
             return "redirect:/login";  // Reindirizza se l'utente non è autenticato
         }
-    return "upload";
+        return "upload";
     }
 
+    // Gestisce l'upload dei file
     @PostMapping("/upload")
     public String uploadNote(
             @RequestParam("title") String title,
@@ -43,17 +54,27 @@ public class NoteController {
             Principal principal
     ) throws IOException {
 
-        if (file.isEmpty()) return "redirect:/?error=file";
+        // Controllo se il file è vuoto
+        if (file.isEmpty()) {
+            return "redirect:/upload?error=fileEmpty";
+        }
 
-        Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+        // Recupera l'utente autenticato
+        Optional<User> optionalUser = getAuthenticatedUser(principal);
         if (optionalUser.isEmpty()) return "redirect:/login";
 
+        // Imposta la directory di upload
         String uploadDir = "uploads/";
-        String newFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        String newFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         Path path = Paths.get(uploadDir, newFileName);
+
+        // Crea la directory se non esiste
         Files.createDirectories(path.getParent());
+
+        // Copia il file nella destinazione
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
+        // Crea una nuova nota
         Note note = new Note();
         note.setTitle(title);
         note.setDescription(description);
@@ -61,16 +82,16 @@ public class NoteController {
         note.setUploadDate(LocalDateTime.now());
         note.setUploader(optionalUser.get());
 
+        // Salva la nota nel database
         noteRepository.save(note);
 
-        return "redirect:/";
+        return "redirect:/";  // Reindirizza alla home
     }
 
+    // Gestisce la ricerca delle note
     @GetMapping("/search")
     public String searchNotes(@RequestParam("query") String query, Model model, Principal principal) {
-        if (principal == null) return "redirect:/login";
-
-        Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<User> optionalUser = getAuthenticatedUser(principal);
         if (optionalUser.isEmpty()) return "redirect:/login";
 
         String corso = optionalUser.get().getCorsoDiStudi();
