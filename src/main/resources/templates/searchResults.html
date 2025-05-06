@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Risultati ricerca</title>
+</head>
+<body>
+    <h1>Risultati per: "<span th:text="${query}"></span>"</h1>
+
+    <div th:if="${#lists.isEmpty(results)}">
+        <p>Nessun appunto trovato per la tua ricerca nel tuo corso di studi.</p>
+    </div>
+
+    <div th:each="note : ${results}">
+        <h2 th:text="${note.title}"></h2>
+        <p th:text="${note.description}"></p>
+        <p th:text="'Caricato il: ' + ${#temporals.format(note.uploadDate, 'dd/MM/yyyy HH:mm')}"></p>
+        <a th:href="@{/${note.filePath}}" download>📄 Scarica</a>
+        <hr/>
+    </div>
+
+    <a th:href="@{/}">🔙 Torna alla home</a>
+</body>
+</html>

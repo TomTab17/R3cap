@@ -1,0 +1,142 @@
+/* upload.css */
+
+/* Impostazione di uno sfondo blu sfumato per il body */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #003366, #0059b3); /* Blu sfumato */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Titolo centrato con colore blu */
+h1 {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Contenitore del form con sfondo semi-trasparente e bordi arrotondati */
+form {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    z-index: 0;
+}
+
+/* Input di testo e textarea */
+input[type="text"], textarea, input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #003366; /* Bordi blu scuro */
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #003366; /* Colore blu per il testo */
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Focus sugli input con cambio di colore dei bordi */
+input[type="text"]:focus, textarea:focus, input[type="file"]:focus {
+    border-color: #0059b3; /* Blu chiaro per il focus */
+    outline: none;
+}
+
+/* Stile per il textarea */
+textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+/* Bottone di invio con sfondo blu */
+button {
+    background-color: #003366; /* Blu scuro */
+    color: white;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    margin-top: 18px;
+}
+
+/* Cambio di colore e effetto hover sul bottone */
+button:hover {
+    background-color: #0059b3; /* Blu più chiaro */
+    transform: translateY(-4px);
+}
+
+/* Stato attivo del bottone */
+button:active {
+    background-color: #001f4d; /* Blu scurissimo */
+    transform: translateY(2px);
+}
+
+/* Spaziatura per i messaggi di successo e errore */
+.message {
+    margin: 10px 0;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.message.success {
+    color: #7CFC00; /* Verde chiaro per il successo */
+}
+
+.message.error {
+    color: #FF6347; /* Rosso per gli errori */
+}
+
+/* Media Query per dispositivi mobili */
+@media (max-width: 600px) {
+    form {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    input, button {
+        font-size: 0.95rem;
+    }
+}
+
+/* Bottone per tornare indietro (più piccolo e più vicino) */
+button.back-button {
+    background-color: #0059b3; /* Blu chiaro per il bottone di ritorno */
+    margin-top: 10px; /* Ridotto per avvicinarlo al tasto "Carica" */
+    padding: 8px 20px; /* Dimensioni ridotte per il bottone "Indietro" */
+    font-size: 1rem; /* Font più piccolo */
+    border: 2px solid #003366; /* Bordo blu scuro per il tasto "Indietro" */
+    border-radius: 10px; /* Mantieni angoli arrotondati */
+    transition: background-color 0.3s, transform 0.2s;
+    width: auto; /* Larghezza automatica per renderlo più corto */
+    max-width: 180px; /* Imposto una larghezza massima per il pulsante "Indietro" */
+}
+
+/* Hover e stato attivo per il tasto "Torna Indietro" */
+button.back-button:hover {
+    background-color: #003366; /* Blu scuro al passaggio del mouse */
+    transform: translateY(-4px);
+}
+
+button.back-button:active {
+    background-color: #001f4d; /* Blu scurissimo al click */
+    transform: translateY(2px);
+}
+

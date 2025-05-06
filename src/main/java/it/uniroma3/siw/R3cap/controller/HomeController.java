@@ -81,8 +81,6 @@ public class HomeController {
         return "redirect:/profile";
     }
 
-    @GetMapping("/upload.html")
-    public String uploadPage() {
-        return "upload";
-    }
+    
+
 }

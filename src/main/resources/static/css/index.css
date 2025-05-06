@@ -181,7 +181,7 @@ a:hover {
 .corso-di-studi {
   position: absolute;
   top: 20px;
-  left: 60px;
+  left: 30px;
   padding: 12px 20px;
   background: rgba(255, 255, 255, 0.12);
   border-left: 5px solid #ffffff;
@@ -236,16 +236,15 @@ a:hover {
   font-size: 2rem;
   color: #003366;
   cursor: pointer;
-  margin-left: 5px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Aggiunta transizione per ingrandimento e ombra */
+  margin-left: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .search-button:hover {
-  transform: scale(1.2); /* Ingrandisce il bottone al passaggio del mouse */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Aggiunge un'ombra per farlo risaltare */
+  transform: scale(1.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Ricerca Avanzata - più piccola */
 .advanced-search-box {
   margin-top: 25px;
   padding: 12px 20px;
@@ -288,4 +287,40 @@ a:hover {
   background-color: #0059b3;
   color: white;
   transform: translateY(1px);
+}
+
+/* Nuovo pulsante per caricare appunto */
+.upload-note-box {
+  position: absolute;
+  top: 100px; /* Altezza del profilo + un po' di spazio */
+  left: 30px; /* Allinea il pulsante a destra, esattamente sotto il profilo */
+  text-align: center;
+}
+
+.btn-upload-note {
+  background-color: #ffffff;
+  color: #003366;
+  padding: 10px 20px; /* Ridotto il padding per renderlo più piccolo */
+  border-radius: 25px; /* Angoli più arrotondati */
+  font-size: 1rem; /* Font più piccolo */
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Ombra più leggera per effetto più elegante */
+  transition: background-color 0.3s, color 0.3s, transform 0.2s ease-in-out, box-shadow 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-upload-note:hover {
+  background-color: #e0e0e0;
+  color: #001f4d;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Aggiunta ombra più prominente */
+}
+
+.btn-upload-note:active {
+  background-color: #0059b3;
+  color: white;
+  transform: translateY(2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra più morbida al clic */
 }

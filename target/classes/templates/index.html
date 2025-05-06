@@ -45,8 +45,10 @@
 
     <!-- Form di ricerca (solo se loggato) -->
     <div class="search-form" th:if="${utente != null}">
-        <input type="text" class="search-input" placeholder="Cerca il tuo R3cap 📚" />
-        <button type="button" class="search-button">🔍</button>
+        <form th:action="@{/notes/search}" method="get" style="display: flex; width: 100%;">
+            <input type="text" class="search-input" name="query" placeholder="Cerca il tuo R3cap 📚" required />
+            <button type="submit" class="search-button">🔍</button>
+        </form>
     </div>
 
     <!-- Ricerca avanzata - visibile solo se loggato -->
@@ -56,6 +58,14 @@
             🧐 Ricerca avanzata
         </a>
     </div>
+
+    <!-- Pulsante per caricare un appunto (solo se loggato) -->
+    <div class="upload-note-box" th:if="${utente != null}">
+        <a th:href="@{/notes/upload}" class="btn-upload-note">
+            📤 Carica un R3cap
+        </a>
+    </div>
+    
 
 </body>
 </html>
