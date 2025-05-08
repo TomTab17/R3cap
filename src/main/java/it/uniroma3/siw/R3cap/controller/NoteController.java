@@ -5,12 +5,17 @@ import it.uniroma3.siw.R3cap.model.User;
 import it.uniroma3.siw.R3cap.repository.NoteRepository;
 import it.uniroma3.siw.R3cap.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -28,53 +33,45 @@ public class NoteController {
     @Autowired
     private UserRepository userRepository;
 
-    // Metodo per ottenere l'utente autenticato
+    private final String uploadDir = "uploads/";
+
     private Optional<User> getAuthenticatedUser(Principal principal) {
-        if (principal == null) {
-            return Optional.empty();
-        }
+        if (principal == null) return Optional.empty();
         return userRepository.findByUsername(principal.getName());
     }
 
-    // Mostra il form di upload
     @GetMapping("/upload")
     public String showUploadForm(Principal principal) {
-        if (principal == null) {
-            return "redirect:/login";  // Reindirizza se l'utente non è autenticato
-        }
+        if (principal == null) return "redirect:/login";
         return "upload";
     }
 
-    // Gestisce l'upload dei file
     @PostMapping("/upload")
     public String uploadNote(
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             @RequestParam("file") MultipartFile file,
-            Principal principal
+            Principal principal,
+            Model model
     ) throws IOException {
 
-        // Controllo se il file è vuoto
         if (file.isEmpty()) {
-            return "redirect:/upload?error=fileEmpty";
+            model.addAttribute("error", "Il file non può essere vuoto.");
+            return "upload";
         }
 
-        // Recupera l'utente autenticato
         Optional<User> optionalUser = getAuthenticatedUser(principal);
         if (optionalUser.isEmpty()) return "redirect:/login";
 
-        // Imposta la directory di upload
-        String uploadDir = "uploads/";
-        String newFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Files.createDirectories(Paths.get(uploadDir));
+
+        String originalFilename = Paths.get(file.getOriginalFilename()).getFileName().toString();
+        String sanitizedFilename = originalFilename.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
+        String newFileName = UUID.randomUUID() + "_" + sanitizedFilename;
         Path path = Paths.get(uploadDir, newFileName);
 
-        // Crea la directory se non esiste
-        Files.createDirectories(path.getParent());
-
-        // Copia il file nella destinazione
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-        // Crea una nuova nota
         Note note = new Note();
         note.setTitle(title);
         note.setDescription(description);
@@ -82,13 +79,11 @@ public class NoteController {
         note.setUploadDate(LocalDateTime.now());
         note.setUploader(optionalUser.get());
 
-        // Salva la nota nel database
         noteRepository.save(note);
 
-        return "redirect:/";  // Reindirizza alla home
+        return "redirect:/";
     }
 
-    // Gestisce la ricerca delle note
     @GetMapping("/search")
     public String searchNotes(@RequestParam("query") String query, Model model, Principal principal) {
         Optional<User> optionalUser = getAuthenticatedUser(principal);
@@ -100,5 +95,23 @@ public class NoteController {
         model.addAttribute("results", results);
         model.addAttribute("query", query);
         return "searchResults";
+    }
+
+    @GetMapping("/download/{noteId}")
+    public ResponseEntity<Resource> downloadNote(@PathVariable Long noteId) throws MalformedURLException {
+        Optional<Note> optionalNote = noteRepository.findById(noteId);
+        if (optionalNote.isEmpty()) return ResponseEntity.notFound().build();
+
+        Note note = optionalNote.get();
+        Path path = Paths.get(note.getFilePath());
+        Resource resource = new UrlResource(path.toUri());
+
+        if (!resource.exists() || !resource.isReadable()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + path.getFileName().toString() + "\"")
+                .body(resource);
     }
 }

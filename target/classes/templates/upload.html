@@ -8,22 +8,18 @@
     <h1>Carica un R3cap 📕</h1>
 
     <!-- Messaggio di errore se il file è vuoto -->
-    <div th:if="${param.error}">
-        <p style="color: red;" th:text="${param.error}"></p>
+    <div th:if="${error}">
+        <p class="message error" th:text="${error}"></p>
     </div>
 
     <form action="/notes/upload" method="post" enctype="multipart/form-data">
-        <!-- Aggiungi il token CSRF -->
         <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
 
         <input type="text" name="title" placeholder="Titolo" required><br><br>
         <textarea name="description" placeholder="Descrizione" required></textarea><br><br>
         <input type="file" name="file" accept=".pdf,image/*" required><br><br>
-        
-        <!-- Bottone per caricare -->
+
         <button type="submit">Carica</button><br><br>
-        
-        <!-- Bottone per tornare indietro (modificato per essere più piccolo e in basso) -->
         <button type="button" class="back-button" onclick="window.history.back()">Torna Indietro</button>
     </form>
 </body>
