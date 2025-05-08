@@ -1,15 +1,20 @@
 /* Impostazioni di base */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #1e1e1e;
+    background: linear-gradient(to right, #003366, #0059b3); /* Blu sfumato */
     color: #f1f1f1;
     margin: 0;
     padding: 0;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 h1 {
-    color: #f39c12;
+    color: white;
     font-size: 2.5em;
     margin-top: 20px;
 }
@@ -19,7 +24,7 @@ div > div {
     margin: 30px auto;
     width: 90%;
     max-width: 900px;
-    background-color: #2c3e50;
+    background-color: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
@@ -83,21 +88,27 @@ div > div th\\:if {
 
 /* Bottone per tornare alla home */
 a[href='/'] {
-    color: #f39c12;
+    color: #ffffff; /* Testo bianco per contrastare con il fondo blu */
     font-size: 1.5em;
     text-decoration: none;
-    margin-top: 30px;
-    display: inline-block;
-    padding: 10px 20px;
-    border: 2px solid #f39c12;
+    padding: 12px 25px;
+    border: 2px solid #ffffff; /* Bordo bianco per farlo risaltare */
     border-radius: 10px;
-    background-color: transparent;
+    background-color: #0059b3; /* Sfondo blu scuro per il pulsante */
     transition: all 0.3s ease;
+    margin-top: 30px;
 }
 
+/* Hover sul bottone di ritorno */
 a[href='/']:hover {
-    background-color: #f39c12;
-    color: #2c3e50;
-    transform: translateY(-2px);
+    background-color: #3498db; /* Blu più chiaro durante l'hover */
+    color: #2c3e50; /* Testo blu scuro per contrastare con il blu chiaro */
+    transform: translateY(-3px); /* Effetto sollevamento */
 }
 
+/* Stato attivo del bottone */
+a[href='/']:active {
+    background-color: #003366; /* Blu scurissimo al click */
+    color: #ffffff; /* Testo bianco durante il click */
+    transform: translateY(2px); /* Effetto di spinta verso il basso */
+}
