@@ -1,15 +1,20 @@
 /* Impostazioni di base */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #001f4d;
-    color: #e0f0ff;
+    background: linear-gradient(to right, #003366, #0059b3); /* Blu sfumato */
+    color: #f1f1f1;
     margin: 0;
     padding: 0;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 h1 {
-    color: #66b3ff;
+    color: white;
     font-size: 2.5em;
     margin-top: 20px;
 }
@@ -19,7 +24,7 @@ div > div {
     margin: 30px auto;
     width: 90%;
     max-width: 900px;
-    background-color: #003366;
+    background-color: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
@@ -29,7 +34,7 @@ div > div {
 }
 
 h2 {
-    color: #3399ff;
+    color: #e74c3c;
     font-size: 2em;
     margin-bottom: 10px;
 }
@@ -43,26 +48,26 @@ div > div:hover {
 
 /* Stile per le anteprime dei file */
 a {
-    color: #66b3ff;
+    color: #3498db;
     text-decoration: none;
     font-size: 1.2em;
     margin-top: 10px;
     display: inline-block;
     padding: 10px;
-    background-color: #00264d;
+    background-color: #34495e;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
 }
 
 a:hover {
-    background-color: #0059b3;
+    background-color: #2980b9;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
     transform: translateY(-2px);
 }
 
 hr {
-    border-top: 1px solid #4d648d;
+    border-top: 1px solid #7f8c8d;
     width: 80%;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -70,33 +75,40 @@ hr {
 
 div p {
     font-size: 1.1em;
-    color: #d6eaf8;
+    color: #ecf0f1;
     margin-bottom: 10px;
 }
 
 /* Messaggio quando non ci sono risultati */
-div > div th\:if {
+div > div th\\:if {
     font-size: 1.5em;
-    color: #3399ff;
+    color: #e74c3c;
     font-weight: bold;
 }
 
 /* Bottone per tornare alla home */
 a[href='/'] {
-    color: #66b3ff;
+    color: #ffffff; /* Testo bianco per contrastare con il fondo blu */
     font-size: 1.5em;
     text-decoration: none;
-    margin-top: 30px;
-    display: inline-block;
-    padding: 10px 20px;
-    border: 2px solid #66b3ff;
+    padding: 12px 25px;
+    border: 2px solid #ffffff; /* Bordo bianco per farlo risaltare */
     border-radius: 10px;
-    background-color: transparent;
+    background-color: #0059b3; /* Sfondo blu scuro per il pulsante */
     transition: all 0.3s ease;
+    margin-top: 30px;
 }
 
+/* Hover sul bottone di ritorno */
 a[href='/']:hover {
-    background-color: #66b3ff;
-    color: #003366;
-    transform: translateY(-2px);
+    background-color: #3498db; /* Blu più chiaro durante l'hover */
+    color: #2c3e50; /* Testo blu scuro per contrastare con il blu chiaro */
+    transform: translateY(-3px); /* Effetto sollevamento */
+}
+
+/* Stato attivo del bottone */
+a[href='/']:active {
+    background-color: #003366; /* Blu scurissimo al click */
+    color: #ffffff; /* Testo bianco durante il click */
+    transform: translateY(2px); /* Effetto di spinta verso il basso */
 }
