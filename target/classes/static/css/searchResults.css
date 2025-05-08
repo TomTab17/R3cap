@@ -99,6 +99,13 @@ div p {
     font-size: 1.1em;
     color: #d5d5d5;
     margin-bottom: 12px;
+
+    /* 🔽 Aggiunte per gestire descrizioni lunghe */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-height: 150px;           /* Scroll se troppo lunga */
+    overflow-y: auto;
 }
 
 /* Messaggio quando non ci sono risultati */
