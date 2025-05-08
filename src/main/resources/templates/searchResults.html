@@ -7,18 +7,21 @@
 <body>
     <h1>Risultati per: "<span th:text="${query}"></span>"</h1>
 
-    <div th:if="${#lists.isEmpty(results)}">
-        <p class="message">Nessun appunto trovato per la tua ricerca nel tuo corso di studi.</p>
+    <div class="results-grid">
+        <div th:if="${#lists.isEmpty(results)}">
+            <p class="message">Nessun appunto trovato per la tua ricerca nel tuo corso di studi.</p>
+        </div>
+
+        <div th:each="note : ${results}" class="note-card">
+            <h2 th:text="${note.title}"></h2>
+            <p th:text="${note.description}"></p>
+            <p th:text="'Caricato da: ' + ${note.uploader.username}"></p>
+            <p th:text="'Caricato il: ' + ${#temporals.format(note.uploadDate, 'dd/MM/yyyy HH:mm')}"></p>
+            <a th:href="@{'/notes/download/' + ${note.id}}" download class="download-link">📄 Scarica</a>
+            <hr/>
+        </div>
     </div>
 
-    <div th:each="note : ${results}" class="note-card">
-        <h2 th:text="${note.title}"></h2>
-        <p th:text="${note.description}"></p>
-        <p th:text="'Caricato il: ' + ${#temporals.format(note.uploadDate, 'dd/MM/yyyy HH:mm')}"></p>
-        <a th:href="@{'/notes/download/' + ${note.id}}" download class="download-link">📄 Scarica</a>
-        <hr/>
-    </div>
-
-    <a th:href="@{/}" class="back-link">🔙 Torna alla home</a>
+    <a th:href="@{/}" class="back-link">Torna alla home 🏠</a>
 </body>
 </html>
