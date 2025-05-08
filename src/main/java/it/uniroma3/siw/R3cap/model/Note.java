@@ -16,6 +16,8 @@ public class Note {
     private String filePath;
     private LocalDateTime uploadDate;
 
+    private String previewImagePath; // ✅ Nuovo campo
+
     @ManyToOne
     private User uploader;
 
@@ -33,6 +35,9 @@ public class Note {
 
     public LocalDateTime getUploadDate() { return uploadDate; }
     public void setUploadDate(LocalDateTime uploadDate) { this.uploadDate = uploadDate; }
+
+    public String getPreviewImagePath() { return previewImagePath; }
+    public void setPreviewImagePath(String previewImagePath) { this.previewImagePath = previewImagePath; }
 
     public User getUploader() { return uploader; }
     public void setUploader(User uploader) { this.uploader = uploader; }

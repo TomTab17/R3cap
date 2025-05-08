@@ -14,6 +14,18 @@
 
         <div th:each="note : ${results}" class="note-card">
             <h2 th:text="${note.title}"></h2>
+
+            <!-- Mostra anteprima se disponibile -->
+            <div th:block="note != null and note.previewImagePath != null">
+                <div class="preview-container">
+                    <!-- Usa data-src per la sorgente dell'immagine -->
+                    <img th:src="@{${note.previewImagePath}}" 
+                         th:attr="data-src=@{/previews/${note.previewImagePath}}" 
+                         alt="Anteprima PDF" class="preview-image" 
+                         onload="loadImageWithToken(this)" />
+                </div>
+            </div>
+
             <p th:text="${note.description}"></p>
             <p th:text="'Caricato da: ' + ${note.uploader.username}"></p>
             <p th:text="'Caricato il: ' + ${#temporals.format(note.uploadDate, 'dd/MM/yyyy HH:mm')}"></p>
@@ -23,5 +35,25 @@
     </div>
 
     <a th:href="@{/}" class="back-link">Torna alla home 🏠</a>
+
+    <script>
+        // Funzione per caricare l'immagine con il token
+        function loadImageWithToken(imageElement) {
+            var token = /*[[${_csrf.token}]]*/ ''; // Ottieni il token CSRF da Thymeleaf
+            var src = imageElement.getAttribute('data-src'); // Ottieni il percorso dell'immagine
+
+            if (token && src) {
+                var img = new Image();
+                img.src = src;  // Imposta l'URL dell'immagine
+                img.onload = function() {
+                    imageElement.src = src; // Carica l'immagine una volta che è stata recuperata
+                };
+                img.onerror = function() {
+                    console.error('Errore nel caricamento dell\'immagine.');
+                };
+            }
+        }
+    </script>
+
 </body>
 </html>

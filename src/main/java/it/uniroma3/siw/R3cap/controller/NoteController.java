@@ -4,6 +4,7 @@ import it.uniroma3.siw.R3cap.model.Note;
 import it.uniroma3.siw.R3cap.model.User;
 import it.uniroma3.siw.R3cap.repository.NoteRepository;
 import it.uniroma3.siw.R3cap.repository.UserRepository;
+import it.uniroma3.siw.R3cap.service.PdfPreviewGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
@@ -34,6 +36,7 @@ public class NoteController {
     private UserRepository userRepository;
 
     private final String uploadDir = "uploads/";
+    private final String previewDir = "src/main/resources/static/previews/";
 
     private Optional<User> getAuthenticatedUser(Principal principal) {
         if (principal == null) return Optional.empty();
@@ -64,6 +67,7 @@ public class NoteController {
         if (optionalUser.isEmpty()) return "redirect:/login";
 
         Files.createDirectories(Paths.get(uploadDir));
+        Files.createDirectories(Paths.get(previewDir)); // Crea la cartella preview se non esiste
 
         String originalFilename = Paths.get(file.getOriginalFilename()).getFileName().toString();
         String sanitizedFilename = originalFilename.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
@@ -79,7 +83,20 @@ public class NoteController {
         note.setUploadDate(LocalDateTime.now());
         note.setUploader(optionalUser.get());
 
-        noteRepository.save(note);
+        noteRepository.save(note); // Salva per ottenere l'ID
+
+        // Genera preview
+        try {
+            String previewPath = PdfPreviewGenerator.generatePreview(
+                path.toFile(),
+                previewDir,
+                String.valueOf(note.getId())
+            );
+            note.setPreviewImagePath(previewPath);
+            noteRepository.save(note); // Salva di nuovo con previewPath
+        } catch (Exception e) {
+            System.err.println("Errore durante la generazione della preview: " + e.getMessage());
+        }
 
         return "redirect:/";
     }
