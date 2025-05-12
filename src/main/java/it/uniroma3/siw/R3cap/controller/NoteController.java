@@ -111,7 +111,28 @@ public class NoteController {
 
         model.addAttribute("results", results);
         model.addAttribute("query", query);
+        model.addAttribute("corsoDiStudiUtente", corso);
         return "searchResults";
+    }
+
+    @GetMapping("/ricerca-avanzata")
+    public String showAdvancedSearchForm(Principal principal, Model model) {
+        if (principal == null) return "redirect:/login";
+        return "advancedSearch";
+    }
+
+    @GetMapping("/risultati-ricerca-avanzata")
+    public String advancedSearchNotes(@RequestParam("query") String query,
+                                      @RequestParam("corsoDiStudi") String corsoDiStudi,
+                                      Model model, Principal principal) {
+        Optional<User> optionalUser = getAuthenticatedUser(principal);
+        if (optionalUser.isEmpty()) return "redirect:/login";
+
+        List<Note> results = noteRepository.findByTitleContainingIgnoreCaseAndUploader_CorsoDiStudiIgnoreCase(query, corsoDiStudi);
+        model.addAttribute("results", results);
+        model.addAttribute("query", query);
+        model.addAttribute("corsoDiStudiSelezionato", corsoDiStudi); // Utile per visualizzare il corso selezionato nei risultati
+        return "searchResults"; // Riusiamo la pagina searchResults.html
     }
 
     @GetMapping("/download/{noteId}")

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ricerca Avanzata</title>
+    <link rel="stylesheet" th:href="@{/css/advancedSearch.css}" />
+</head>
+<body>
+    <h1>Ricerca Avanzata di R3cap</h1>
+
+    <form th:action="@{/notes/risultati-ricerca-avanzata}" method="get" class="advanced-search-form">
+        <div class="form-group">
+            <label for="query">Titolo della nota:</label>
+            <input type="text" id="query" name="query" placeholder="Inserisci il titolo da cercare" required />
+        </div>
+
+        <div class="form-group">
+            <label for="corsoDiStudi">Corso di Studi:</label>
+            <select id="corsoDiStudi" name="corsoDiStudi" required>
+                <option value="">Seleziona un corso di studi</option>
+                <option value="Informatica">Informatica</option>
+                <option value="Fisica">Fisica</option>
+                <option value="Matematica">Matematica</option>
+                <option value="Ingegneria">Ingegneria</option>
+                </select>
+        </div>
+
+        <button type="submit" class="search-button">🔍 Cerca</button>
+    </form>
+
+    <a th:href="@{/}" class="back-link">Torna alla home 🏠</a>
+</body>
+</html>
