@@ -31,7 +31,7 @@
             <tbody>
                 <tr th:each="entry, iterStat : ${ranking}">
                     <td th:text="${iterStat.index + 1}"></td>
-                    <td th:text="${entry.user.nome + ' ' + entry.user.cognome}"></td>
+                    <td th:text="${entry.user.username}"></td>
                     <td th:text="${entry.score}"></td>
                 </tr>
             </tbody>
