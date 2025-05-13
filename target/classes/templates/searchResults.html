@@ -11,8 +11,11 @@
     <div class="overlay-message" th:if="${#lists.isEmpty(results)}">
         <p>
             🙅🏼‍♂️ Nessun appunto trovato per la tua ricerca
-            <span th:if="${corsoDiStudiSelezionato != null}">
+            <span th:if="${corsoDiStudiSelezionato != null && corsoDiStudiSelezionato != 'Tutti'}">
                 nel corso di studi di <span th:text="${corsoDiStudiSelezionato}"></span>
+            </span>
+            <span th:if="${corsoDiStudiSelezionato == 'Tutti'}">
+                in tutti i corsi di studio
             </span>
             <span th:if="${corsoDiStudiSelezionato == null}">
                 nel tuo corso di studi di <span th:text="${corsoDiStudiUtente}"></span>

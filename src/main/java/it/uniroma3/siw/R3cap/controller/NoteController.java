@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-//import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
@@ -128,7 +127,16 @@ public class NoteController {
         Optional<User> optionalUser = getAuthenticatedUser(principal);
         if (optionalUser.isEmpty()) return "redirect:/login";
 
-        List<Note> results = noteRepository.findByTitleContainingIgnoreCaseAndUploader_CorsoDiStudiIgnoreCase(query, corsoDiStudi);
+        List<Note> results;
+
+        if ("Tutti".equals(corsoDiStudi)) {
+            // Ricerca globale (senza filtro per corso di studi)
+            results = noteRepository.findByTitleContainingIgnoreCase(query);
+        } else {
+            // Ricerca per corso di studi specifico
+            results = noteRepository.findByTitleContainingIgnoreCaseAndUploader_CorsoDiStudiIgnoreCase(query, corsoDiStudi);
+        }
+
         model.addAttribute("results", results);
         model.addAttribute("query", query);
         model.addAttribute("corsoDiStudiSelezionato", corsoDiStudi); // Utile per visualizzare il corso selezionato nei risultati
