@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Classifica Utenti</title>
+    <link rel="stylesheet" th:href="@{/css/ranking.css}" />
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 Classifica Utenti - <span th:text="${corsoDiStudi}"></span></h1>
+
+        <form th:action="@{/ranking}" method="get" class="filter-form">
+            <label for="corsoDiStudi">🎓 Filtra per corso di studi:</label>
+            <select name="corsoDiStudi" id="corsoDiStudi">
+                <option>Tutti</option>
+                <option>Ingegneria Informatica</option>
+                <option>Matematica</option>
+                <!-- Aggiungi altri corsi qui -->
+            </select>
+            <button type="submit">Visualizza</button>
+        </form>
+
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>📍 Posizione</th>
+                    <th>👤 Utente</th>
+                    <th>🔥 Punti</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entry, iterStat : ${ranking}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${entry.user.nome + ' ' + entry.user.cognome}"></td>
+                    <td th:text="${entry.score}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a th:href="@{/}" class="back-link">← Torna alla home</a>
+    </div>
+</body>
+</html>

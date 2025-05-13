@@ -40,6 +40,21 @@
             <p th:text="'Caricato da: ' + ${note.uploader.username}"></p>
             <p th:text="'Caricato il: ' + ${#temporals.format(note.uploadDate, 'dd/MM/yyyy HH:mm')}"></p>
             <a th:href="@{'/notes/download/' + ${note.id}}" download class="download-link">📄 Scarica</a>
+
+            <!-- 🔽 Sezione voti -->
+            <div class="vote-section">
+                <form th:action="@{/notes/vote}" method="post">
+                    <input type="hidden" name="noteId" th:value="${note.id}" />
+                    <input type="hidden" name="value" value="1" />
+                    <button type="submit">⬆</button>
+                </form>
+                <form th:action="@{/notes/vote}" method="post">
+                    <input type="hidden" name="noteId" th:value="${note.id}" />
+                    <input type="hidden" name="value" value="-1" />
+                    <button type="submit">⬇</button>
+                </form>
+            </div>
+
             <hr/>
         </div>
     </div>
