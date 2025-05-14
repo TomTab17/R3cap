@@ -23,9 +23,14 @@ body {
     100% { transform: translateX(0); }
 }
 
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+@keyframes slideInBottomLeft {
+    0% { transform: translate(-100%, 100%); opacity: 0; }
+    100% { transform: translate(0, 0); opacity: 1; }
+}
+
+@keyframes slideInBottomRight {
+    0% { transform: translate(100%, 100%); opacity: 0; }
+    100% { transform: translate(0, 0); opacity: 1; }
 }
 
 h1 {
@@ -69,8 +74,7 @@ a:hover {
     padding: 10px 40px 10px 60px;
     border-radius: 30px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    opacity: 0; /* Inizialmente invisibile */
-    animation: fadeIn 0.5s ease-in-out 0.3s forwards; /* Appare con un ritardo */
+    animation: slideInBottomRight 0.7s ease-out forwards;
 }
 
 .user-profile a {
@@ -189,8 +193,7 @@ a:hover {
     font-weight: 600;
     color: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    opacity: 0; /* Inizialmente invisibile */
-    animation: fadeIn 0.5s ease-in-out 0.3s forwards; /* Appare con un ritardo */
+    animation: slideInBottomLeft 0.7s ease-out forwards;
 }
 
 .search-form {
@@ -295,8 +298,7 @@ a:hover {
     top: 100px;
     left: 30px;
     text-align: center;
-    opacity: 0; /* Inizialmente invisibile */
-    animation: fadeIn 0.5s ease-in-out 0.3s forwards; /* Appare con un ritardo */
+    animation: slideInBottomLeft 0.7s ease-out forwards;
 }
 
 .btn-upload-note {
@@ -327,14 +329,12 @@ a:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Classifica utenti posizionata sotto il profilo */
 .ranking-box {
     position: absolute;
-    top: 100px; /* Altezza del profilo + margine */
+    top: 100px;
     right: 20px;
     text-align: center;
-    opacity: 0; /* Inizialmente invisibile */
-    animation: fadeIn 0.5s ease-in-out 0.3s forwards; /* Appare con un ritardo */
+    animation: slideInBottomRight 0.7s ease-out forwards;
 }
 
 .btn-ranking {
