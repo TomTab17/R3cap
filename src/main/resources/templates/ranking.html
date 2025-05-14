@@ -14,8 +14,15 @@
             <select name="corsoDiStudi" id="corsoDiStudi">
                 <option th:selected="${corsoDiStudi == 'Tutti'}">Tutti</option>
                 <option th:selected="${corsoDiStudi == 'Ingegneria Informatica'}">Ingegneria Informatica</option>
+                <option th:selected="${corsoDiStudi == 'Ingegneria Meccanica'}">Ingegneria Meccanica</option>
+                <option th:selected="${corsoDiStudi == 'Ingegneria Elettronica'}">Ingegneria Elettronica</option>
                 <option th:selected="${corsoDiStudi == 'Matematica'}">Matematica</option>
-                </select>
+                <option th:selected="${corsoDiStudi == 'Fisica'}">Fisica</option>
+                <option th:selected="${corsoDiStudi == 'Economia'}">Economia</option>
+                <option th:selected="${corsoDiStudi == 'Giurisprudenza'}">Giurisprudenza</option>
+                <option th:selected="${corsoDiStudi == 'Lettere'}">Lettere</option>
+                <option th:selected="${corsoDiStudi == 'Lingue e culture straniere'}">Lingue e culture straniere</option>
+            </select>
             <button type="submit">Visualizza</button>
         </form>
 
@@ -28,6 +35,9 @@
                 </tr>
             </thead>
             <tbody>
+                <tr th:if="${#lists.isEmpty(ranking)}">
+                    <td colspan="3" class="empty-message">Nessun utente trovato per il corso selezionato.</td>
+                </tr>
                 <tr th:each="entry, iterStat : ${ranking}">
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${entry.user.username}"></td>
