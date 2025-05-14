@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #123C7B; /* Blu leggermente più chiaro e armonioso */
+    background-color: #123C7B;
     color: #e0e6ed;
     margin: 0;
     padding: 2rem;
@@ -81,15 +81,23 @@ select:focus {
     background-color: #003d99;
 }
 
-.back-link {
+/* Pulsante "Torna alla home" bianco, tondeggiante */
+.home-button {
+    display: inline-block;
     margin-top: 2rem;
-    text-align: center;
-    color: #cce0ff;
-    text-decoration: none;
+    padding: 0.8rem 1.6rem;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
+    color: #123C7B;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s;
 }
 
-.back-link:hover {
-    text-decoration: underline;
+.home-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
 }
