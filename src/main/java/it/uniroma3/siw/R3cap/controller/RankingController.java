@@ -30,7 +30,10 @@ public class RankingController {
                 voteRepository.findByNote_Uploader(u).stream().mapToInt(v -> v.getValue()).sum() :
                 voteRepository.findByNote_UploaderAndNote_Uploader_CorsoDiStudi(u, corso).stream().mapToInt(v -> v.getValue()).sum();
 
-            ranking.add(new UserScore(u, score));
+            // Escludi gli utenti con 0 punti
+            if (score > 0) {
+                ranking.add(new UserScore(u, score));
+            }
         }
 
         // Ordina e prendi i primi 10

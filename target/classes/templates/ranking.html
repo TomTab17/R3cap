@@ -12,11 +12,10 @@
         <form th:action="@{/ranking}" method="get" class="filter-form">
             <label for="corsoDiStudi">🎓 Filtra per corso di studi:</label>
             <select name="corsoDiStudi" id="corsoDiStudi">
-                <option>Tutti</option>
-                <option>Ingegneria Informatica</option>
-                <option>Matematica</option>
-                <!-- Aggiungi altri corsi qui -->
-            </select>
+                <option th:selected="${corsoDiStudi == 'Tutti'}">Tutti</option>
+                <option th:selected="${corsoDiStudi == 'Ingegneria Informatica'}">Ingegneria Informatica</option>
+                <option th:selected="${corsoDiStudi == 'Matematica'}">Matematica</option>
+                </select>
             <button type="submit">Visualizza</button>
         </form>
 
