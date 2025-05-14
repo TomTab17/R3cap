@@ -3,100 +3,135 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: #f4f7f9;
+    background: linear-gradient(to right, #003366, #0059b3);
     color: #333;
 }
 
+/* Container centrale */
 .container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.8s ease-out;
 }
 
+/* Titolo */
 h1 {
     text-align: center;
-    font-size: 2rem;
-    margin-bottom: 30px;
-    color: #2c3e50;
+    font-size: 2.5rem;
+    color: #003366;
+    margin-bottom: 40px;
 }
 
+/* Form filtro */
 .filter-form {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 30px;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
 }
 
 .filter-form label {
-    font-weight: bold;
+    font-weight: 600;
+    color: #003366;
 }
 
-.filter-form select, .filter-form button {
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.filter-form select,
+.filter-form button {
+    padding: 10px 14px;
+    border-radius: 8px;
     font-size: 1rem;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.filter-form select:focus {
+    outline: none;
+    border-color: #0059b3;
+    box-shadow: 0 0 5px rgba(0, 89, 179, 0.5);
 }
 
 .filter-form button {
-    background-color: #2ecc71;
+    background-color: #0059b3;
     color: white;
     border: none;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .filter-form button:hover {
-    background-color: #27ae60;
+    background-color: #004080;
 }
 
+/* Tabella classifica */
 .ranking-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 30px;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .ranking-table thead {
-    background-color: #3498db;
+    background-color: #003366;
     color: white;
 }
 
-.ranking-table th, .ranking-table td {
-    padding: 12px 16px;
+.ranking-table th,
+.ranking-table td {
+    padding: 16px;
     text-align: center;
+    font-size: 1rem;
     border-bottom: 1px solid #ddd;
 }
 
 .ranking-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f5faff;
 }
 
 .ranking-table tbody tr:hover {
-    background-color: #ecf0f1;
+    background-color: #e8f1ff;
+    transition: background-color 0.3s ease;
 }
 
-.back-link {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-    text-decoration: none;
-    color: #2980b9;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.back-link:hover {
-    color: #1c5980;
-}
-
+/* Messaggio vuoto */
 .empty-message {
     text-align: center;
     font-style: italic;
-    color: #888;
-    padding: 20px;
-    background-color: #f9f9f9;
+    color: #777;
+    padding: 30px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+}
+
+/* Link indietro */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #0059b3;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #003366;
+}
+
+/* Animazioni */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
