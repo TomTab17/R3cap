@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
+    <meta charset="UTF-8" />
     <title>Risultati ricerca</title>
     <link rel="stylesheet" th:href="@{/css/searchResults.css}" />
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 <body>
     <h1>Risultati per: "<span th:text="${query}"></span>"</h1>
@@ -24,7 +27,7 @@
     </div>
 
     <div class="results-grid">
-        <div th:each="note : ${results}" class="note-card">
+        <div th:each="note : ${results}" class="note-card" th:attr="data-note-id=${note.id}">
             <h2 th:text="${note.title}"></h2>
 
             <div th:if="${note != null and note.previewImagePath != null}">
@@ -42,17 +45,9 @@
             <a th:href="@{'/notes/download/' + ${note.id}}" download class="download-link">📄 Scarica</a>
 
             <!-- 🔽 Sezione voti -->
-            <div class="vote-section">
-                <form th:action="@{/notes/vote}" method="post">
-                    <input type="hidden" name="noteId" th:value="${note.id}" />
-                    <input type="hidden" name="value" value="1" />
-                    <button type="submit">⬆</button>
-                </form>
-                <form th:action="@{/notes/vote}" method="post">
-                    <input type="hidden" name="noteId" th:value="${note.id}" />
-                    <input type="hidden" name="value" value="-1" />
-                    <button type="submit">⬇</button>
-                </form>
+            <div class="vote-section" th:attr="data-note-id=${note.id}">
+                <button class="vote-btn" data-value="1">⬆</button>
+                <button class="vote-btn" data-value="-1">⬇</button>
             </div>
 
             <hr/>
@@ -78,6 +73,42 @@
                 };
             }
         }
+
+        // AJAX per votazione senza ricaricare la pagina
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        document.querySelectorAll('.vote-section').forEach(section => {
+            const noteId = section.getAttribute('data-note-id');
+            section.querySelectorAll('.vote-btn').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const value = this.getAttribute('data-value');
+
+                    fetch('/notes/vote', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            [header]: token
+                        },
+                        body: new URLSearchParams({
+                            noteId: noteId,
+                            value: value
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Errore nella votazione');
+                        return response.text();
+                    })
+                    .then(data => {
+                        alert('Voto inviato con successo!');
+                    })
+                    .catch(error => {
+                        alert('Errore durante il voto: ' + error.message);
+                    });
+                });
+            });
+        });
     </script>
 </body>
 </html>

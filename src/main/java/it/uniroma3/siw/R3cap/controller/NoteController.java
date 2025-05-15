@@ -37,7 +37,7 @@ public class NoteController {
     private UserRepository userRepository;
 
     @Autowired
-    private VoteRepository voteRepository; // ✅ Iniezione del repository dei voti
+    private VoteRepository voteRepository; // ✅
 
     private final String uploadDir = "uploads/";
     private final String previewDir = "src/main/resources/static/previews/";
@@ -89,7 +89,6 @@ public class NoteController {
 
         noteRepository.save(note);
 
-        // Generazione della preview
         try {
             String previewPath = PdfPreviewGenerator.generatePreview(
                 path.toFile(),
@@ -164,12 +163,12 @@ public class NoteController {
                 .body(resource);
     }
 
-    // ✅ Metodo per gestire il voto (upvote/downvote)
+    // Metodo aggiornato per voto via AJAX (risposta testuale, no redirect)
     @PostMapping("/vote")
+    @ResponseBody
     public String voteNote(@RequestParam Long noteId,
-                       @RequestParam int value,
-                       Principal principal,
-                       @RequestHeader(value = "Referer", required = false) String referer) {
+                           @RequestParam int value,
+                           Principal principal) {
         Optional<User> userOpt = getAuthenticatedUser(principal);
         Optional<Note> noteOpt = noteRepository.findById(noteId);
 
@@ -178,20 +177,19 @@ public class NoteController {
             Note note = noteOpt.get();
 
             Optional<Vote> existingVote = voteRepository.findByVoterAndNote(user, note);
-        if (existingVote.isPresent()) {
-            existingVote.get().setValue(value);
-            voteRepository.save(existingVote.get());
-        } else {
-            Vote vote = new Vote();
-            vote.setNote(note);
-            vote.setVoter(user);
-            vote.setValue(value);
-            voteRepository.save(vote);
+            if (existingVote.isPresent()) {
+                existingVote.get().setValue(value);
+                voteRepository.save(existingVote.get());
+            } else {
+                Vote vote = new Vote();
+                vote.setNote(note);
+                vote.setVoter(user);
+                vote.setValue(value);
+                voteRepository.save(vote);
+            }
+            return "OK";
         }
-    }
 
-    // Torna alla pagina da cui è stato fatto il voto
-    return "redirect:" + (referer != null ? referer : "/");
+        return "ERROR";
     }
-
 }
