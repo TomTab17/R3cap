@@ -101,7 +101,8 @@ public class NoteController {
             System.err.println("Errore durante la generazione della preview: " + e.getMessage());
         }
 
-        return "redirect:/";
+        return "redirect:/?uploadSuccess=true";
+
     }
 
     @GetMapping("/search")

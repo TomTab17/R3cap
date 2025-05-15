@@ -71,5 +71,26 @@
         <a th:href="@{/ranking}" class="btn-ranking">🏆 Classifica utenti</a>
     </div>
 
+    <!-- Messaggio di successo caricamento -->
+    <div id="upload-success-message" th:if="${param.uploadSuccess}">
+      Caricamento avvenuto con successo
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const message = document.getElementById("upload-success-message");
+        if(message){
+          // Mostra la tendina
+          message.style.opacity = '1';
+          message.style.transform = 'translateX(-50%) translateY(0)';
+          // Nascondi dopo 3 secondi
+          setTimeout(() => {
+            message.style.opacity = '0';
+            message.style.transform = 'translateX(-50%) translateY(-20px)';
+          }, 3000);
+        }
+      });
+    </script>
+
 </body>
 </html>
