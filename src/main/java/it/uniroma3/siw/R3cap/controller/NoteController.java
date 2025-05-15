@@ -167,8 +167,9 @@ public class NoteController {
     // ✅ Metodo per gestire il voto (upvote/downvote)
     @PostMapping("/vote")
     public String voteNote(@RequestParam Long noteId,
-                           @RequestParam int value,
-                           Principal principal) {
+                       @RequestParam int value,
+                       Principal principal,
+                       @RequestHeader(value = "Referer", required = false) String referer) {
         Optional<User> userOpt = getAuthenticatedUser(principal);
         Optional<Note> noteOpt = noteRepository.findById(noteId);
 
@@ -177,19 +178,20 @@ public class NoteController {
             Note note = noteOpt.get();
 
             Optional<Vote> existingVote = voteRepository.findByVoterAndNote(user, note);
-            if (existingVote.isPresent()) {
-                Vote vote = existingVote.get();
-                vote.setValue(value); // aggiorna voto esistente
-                voteRepository.save(vote);
-            } else {
-                Vote vote = new Vote();
-                vote.setNote(note);
-                vote.setVoter(user);
-                vote.setValue(value);
-                voteRepository.save(vote);
-            }
+        if (existingVote.isPresent()) {
+            existingVote.get().setValue(value);
+            voteRepository.save(existingVote.get());
+        } else {
+            Vote vote = new Vote();
+            vote.setNote(note);
+            vote.setVoter(user);
+            vote.setValue(value);
+            voteRepository.save(vote);
         }
-
-        return "redirect:/notes/search?query="; // oppure redirigi alla pagina precedente
     }
+
+    // Torna alla pagina da cui è stato fatto il voto
+    return "redirect:" + (referer != null ? referer : "/");
+    }
+
 }

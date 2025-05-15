@@ -7,26 +7,25 @@
 </head>
 <body>
 
-    <!-- Profilo utente -->
-    <div class="profile-container">
-        <div class="profile-header">
-            <!-- Immagine Profilo -->
-            <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}"
-                 alt="Immagine Profilo" class="profile-pic-large" />
+    <div class="profile-wrapper">
+        <div class="profile-container">
+            <div class="profile-card">
+                <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}"
+                     alt="Immagine Profilo" class="profile-pic-large" />
 
-            <div class="profile-details">
-                <h2 class="user-name" th:text="${utente.nome} + ' ' + ${utente.cognome}"></h2>
-                <p><strong>Email:</strong> <span th:text="${utente.email}"></span></p>
-                <p><strong>Corso di Studi:</strong> <span th:text="${utente.corsoDiStudi}"></span></p>
-                <p><strong>Disponibile per ripetizioni:</strong>
-                    <span th:text="${utente.disponibileRipetizioni ? 'Sì' : 'No'}"></span>
-                </p>
+                <div class="profile-info">
+                    <h2 th:text="${utente.nome} + ' ' + ${utente.cognome}"></h2>
+                    <p><strong>Email:</strong> <span th:text="${utente.email}"></span></p>
+                    <p><strong>Corso di Studi:</strong> <span th:text="${utente.corsoDiStudi}"></span></p>
+                    <p><strong>Disponibile per ripetizioni:</strong> <span th:text="${utente.disponibileRipetizioni ? 'Sì' : 'No'}"></span></p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="/" class="button back">🏠 Torna alla Home</a>
+                <a th:href="@{/profile/edit}" class="button edit">✏️ Modifica Profilo</a>
             </div>
         </div>
-
-        <!-- Pulsanti -->
-        <a href="/" class="back-button">Torna alla Home</a>
-        <a th:href="@{/profile/edit}" class="edit-button">Modifica Profilo</a>
     </div>
 
 </body>
