@@ -46,8 +46,8 @@
 
             <!-- 🔽 Sezione voti -->
             <div class="vote-section" th:attr="data-note-id=${note.id}">
-                <button class="vote-btn" data-value="1">⬆</button>
-                <button class="vote-btn" data-value="-1">⬇</button>
+                <button class="vote-btn" data-value="1" th:classappend="${votes[note.id] == 1} ? ' upvoted' : ''">⬆</button>
+                <button class="vote-btn" data-value="-1" th:classappend="${votes[note.id] == -1} ? ' downvoted' : ''">⬇</button>
             </div>
 
             <hr/>
@@ -80,6 +80,9 @@
 
         document.querySelectorAll('.vote-section').forEach(section => {
             const noteId = section.getAttribute('data-note-id');
+            const upvoteBtn = section.querySelector('button[data-value="1"]');
+            const downvoteBtn = section.querySelector('button[data-value="-1"]');
+
             section.querySelectorAll('.vote-btn').forEach(button => {
                 button.addEventListener('click', function(event) {
                     event.preventDefault();
@@ -101,7 +104,14 @@
                         return response.text();
                     })
                     .then(data => {
-                        alert('Voto inviato con successo!');
+                        // Aggiorna colore bottoni in base al voto inviato
+                        if (value === '1') {
+                            upvoteBtn.classList.add('upvoted');
+                            downvoteBtn.classList.remove('downvoted');
+                        } else if (value === '-1') {
+                            downvoteBtn.classList.add('downvoted');
+                            upvoteBtn.classList.remove('upvoted');
+                        }
                     })
                     .catch(error => {
                         alert('Errore durante il voto: ' + error.message);

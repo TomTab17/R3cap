@@ -205,3 +205,15 @@ a[href='/']:active {
     transform: scale(0.95);
     color: #00ffcc;
 }
+
+.vote-section button.upvoted {
+    color: #28a745; /* verde */
+    font-weight: bold;
+    text-shadow: 0 0 5px #28a745;
+}
+
+.vote-section button.downvoted {
+    color: #dc3545; /* rosso */
+    font-weight: bold;
+    text-shadow: 0 0 5px #dc3545;
+}

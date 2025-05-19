@@ -22,9 +22,7 @@ import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/notes")
@@ -37,7 +35,7 @@ public class NoteController {
     private UserRepository userRepository;
 
     @Autowired
-    private VoteRepository voteRepository; // ✅
+    private VoteRepository voteRepository;
 
     private final String uploadDir = "uploads/";
     private final String previewDir = "src/main/resources/static/previews/";
@@ -102,7 +100,6 @@ public class NoteController {
         }
 
         return "redirect:/?uploadSuccess=true";
-
     }
 
     @GetMapping("/search")
@@ -116,6 +113,15 @@ public class NoteController {
         model.addAttribute("results", results);
         model.addAttribute("query", query);
         model.addAttribute("corsoDiStudiUtente", corso);
+
+        // Recupera voti dell'utente per queste note
+        User user = optionalUser.get();
+        Map<Long, Integer> votesMap = new HashMap<>();
+        for (Note note : results) {
+            voteRepository.findByVoterAndNote(user, note).ifPresent(vote -> votesMap.put(note.getId(), vote.getValue()));
+        }
+        model.addAttribute("votes", votesMap);
+
         return "searchResults";
     }
 
@@ -143,6 +149,15 @@ public class NoteController {
         model.addAttribute("results", results);
         model.addAttribute("query", query);
         model.addAttribute("corsoDiStudiSelezionato", corsoDiStudi);
+
+        // Recupera voti dell'utente per queste note
+        User user = optionalUser.get();
+        Map<Long, Integer> votesMap = new HashMap<>();
+        for (Note note : results) {
+            voteRepository.findByVoterAndNote(user, note).ifPresent(vote -> votesMap.put(note.getId(), vote.getValue()));
+        }
+        model.addAttribute("votes", votesMap);
+
         return "searchResults";
     }
 
@@ -164,7 +179,7 @@ public class NoteController {
                 .body(resource);
     }
 
-    // Metodo aggiornato per voto via AJAX (risposta testuale, no redirect)
+    // Metodo per gestire voto via AJAX (risposta semplice)
     @PostMapping("/vote")
     @ResponseBody
     public String voteNote(@RequestParam Long noteId,
