@@ -9,6 +9,11 @@
     <div class="container">
         <h1>🏆 Classifica Utenti - <span th:text="${corsoDiStudi}"></span></h1>
 
+        <div class="tooltip-container" onmouseenter="startTyping()" onmouseleave="resetTyping()">
+        <span class="tooltip-icon">?</span>
+        <span class="tooltip-text" id="tooltip-text"></span>
+        </div>
+
         <form th:action="@{/ranking}" method="get" class="filter-form">
             <label for="corsoDiStudi">🎓 Filtra per corso di studi:</label>
             <select name="corsoDiStudi" id="corsoDiStudi">
@@ -48,5 +53,32 @@
 
         <a th:href="@{/}" class="back-link">← Torna alla home</a>
     </div>
+    <script>
+    const fullText = "I punteggi della classifica sono calcolati come segue: VOTI POSITIVI - VOTI NEGATIVI di tutti i R3cap caricati";
+    const tooltipTextEl = document.getElementById('tooltip-text');
+    let index = 0;
+    let typingInterval;
+
+    function typeWriter() {
+        if (index < fullText.length) {
+            tooltipTextEl.textContent += fullText.charAt(index);
+            index++;
+        } else {
+            clearInterval(typingInterval);
+        }
+    }
+
+    function startTyping() {
+        tooltipTextEl.textContent = '';
+        index = 0;
+        typingInterval = setInterval(typeWriter, 10); // velocità scrittura in ms
+    }
+
+    function resetTyping() {
+        clearInterval(typingInterval);
+        tooltipTextEl.textContent = '';
+        index = 0;
+    }
+</script>
 </body>
 </html>
