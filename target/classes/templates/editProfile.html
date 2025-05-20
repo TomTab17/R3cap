@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Modifica Profilo</title>
     <link rel="stylesheet" th:href="@{/css/editProfile.css}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
 
     <div class="profile-container">
         <h2>Modifica il tuo profilo</h2>
-        <form th:action="@{/profile/edit}" method="post">
+        <form th:action="@{/profile/edit}" method="post" novalidate>
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" th:value="${utente.nome}" required><br>
+            <input type="text" id="nome" name="nome" th:value="${utente.nome}" required />
 
             <label for="cognome">Cognome:</label>
-            <input type="text" id="cognome" name="cognome" th:value="${utente.cognome}" required><br>
+            <input type="text" id="cognome" name="cognome" th:value="${utente.cognome}" required />
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" th:value="${utente.email}" required><br>
+            <input type="email" id="email" name="email" th:value="${utente.email}" required />
 
             <label for="corsoDiStudi">Corso di Studi:</label>
             <select id="corsoDiStudi" name="corsoDiStudi" required>
-                <option value="" th:selected="${utente.corsoDiStudi == null or utente.corsoDiStudi == ''}">Seleziona un corso di studi</option>
+                <option value="" th:selected="${utente.corsoDiStudi == null or utente.corsoDiStudi == ''}" disabled>Seleziona un corso di studi</option>
                 <option value="Ingegneria Informatica" th:selected="${utente.corsoDiStudi == 'Ingegneria Informatica'}">Ingegneria Informatica</option>
                 <option value="Ingegneria Meccanica" th:selected="${utente.corsoDiStudi == 'Ingegneria Meccanica'}">Ingegneria Meccanica</option>
                 <option value="Ingegneria Elettronica" th:selected="${utente.corsoDiStudi == 'Ingegneria Elettronica'}">Ingegneria Elettronica</option>
@@ -31,58 +32,84 @@
                 <option value="Giurisprudenza" th:selected="${utente.corsoDiStudi == 'Giurisprudenza'}">Giurisprudenza</option>
                 <option value="Lettere" th:selected="${utente.corsoDiStudi == 'Lettere'}">Lettere</option>
                 <option value="Lingue e culture straniere" th:selected="${utente.corsoDiStudi == 'Lingue e culture straniere'}">Lingue e culture straniere</option>
-            </select><br>
+            </select>
 
-            <label>
-                <input type="checkbox" name="disponibileRipetizioni"
-                       th:checked="${utente.disponibileRipetizioni}" />
+            <label class="checkbox-label">
+                <input type="checkbox" name="disponibileRipetizioni" th:checked="${utente.disponibileRipetizioni}" />
                 Disponibile per ripetizioni
-            </label><br>
+            </label>
 
-            <!-- Seleziona immagine profilo -->
-            <label for="immagineProfilo">Seleziona immagine profilo:</label>
+            <label for="immagineProfilo" class="avatar-label">Seleziona immagine profilo:</label>
             <div class="custom-dropdown">
-                <div class="dropdown-selected" id="selected-avatar">
+                <div class="dropdown-selected" id="selected-avatar" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
                     <img th:src="${utente.immagineProfilo}" alt="Avatar selezionato" class="avatar-img" /> Seleziona Avatar
                 </div>
-                <div class="dropdown-options" id="avatar-options">
-                    <div class="avatar-option" data-value="/media/avatar1.png">
+                <div class="dropdown-options" id="avatar-options" role="listbox" tabindex="-1" aria-label="Opzioni avatar">
+                    <div class="avatar-option" data-value="/media/avatar1.png" role="option" tabindex="0">
                         <img src="/media/avatar1.png" alt="Avatar 1" class="avatar-img" /> Avatar 1
                     </div>
-                    <div class="avatar-option" data-value="/media/avatar2.png">
+                    <div class="avatar-option" data-value="/media/avatar2.png" role="option" tabindex="0">
                         <img src="/media/avatar2.png" alt="Avatar 2" class="avatar-img" /> Avatar 2
                     </div>
-                    <div class="avatar-option" data-value="/media/avatar3.png">
+                    <div class="avatar-option" data-value="/media/avatar3.png" role="option" tabindex="0">
                         <img src="/media/avatar3.png" alt="Avatar 3" class="avatar-img" /> Avatar 3
                     </div>
-                    <div class="avatar-option" data-value="/media/avatar4.png">
+                    <div class="avatar-option" data-value="/media/avatar4.png" role="option" tabindex="0">
                         <img src="/media/avatar4.png" alt="Avatar 4" class="avatar-img" /> Avatar 4
                     </div>
                 </div>
                 <input type="hidden" name="immagineProfilo" id="immagineProfilo" th:value="${utente.immagineProfilo}" required />
             </div>
 
-            <button type="submit">Salva Modifiche</button>
+            <button type="submit" class="btn-primary">✅ Salva Modifiche</button>
         </form>
 
-        <a href="/profile" class="back-button">Annulla</a>
+        <div class="back-button-container">
+        <a href="/profile" class="back-button">Annulla ↩️</a>
+        </div>
     </div>
 
     <script>
         const avatarOptions = document.querySelectorAll('.avatar-option');
         const selectedAvatar = document.getElementById('selected-avatar');
         const hiddenInput = document.getElementById('immagineProfilo');
+        const avatarDropdown = document.getElementById('avatar-options');
 
         avatarOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                selectedAvatar.innerHTML = `<img src="${this.querySelector('img').src}" class="avatar-img" /> ${this.textContent.trim()}`;
-                hiddenInput.value = this.dataset.value;
-                document.getElementById('avatar-options').classList.toggle('show');
+            option.addEventListener('click', () => {
+                selectedAvatar.innerHTML = `<img src="${option.querySelector('img').src}" class="avatar-img" /> ${option.textContent.trim()}`;
+                hiddenInput.value = option.dataset.value;
+                avatarDropdown.classList.remove('show');
+                selectedAvatar.setAttribute('aria-expanded', 'false');
+            });
+            option.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    option.click();
+                    selectedAvatar.focus();
+                }
             });
         });
 
-        selectedAvatar.addEventListener('click', function() {
-            document.getElementById('avatar-options').classList.toggle('show');
+        selectedAvatar.addEventListener('click', () => {
+            avatarDropdown.classList.toggle('show');
+            const expanded = avatarDropdown.classList.contains('show');
+            selectedAvatar.setAttribute('aria-expanded', expanded.toString());
+        });
+
+        selectedAvatar.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectedAvatar.click();
+            }
+        });
+
+        // Chiudi dropdown cliccando fuori
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-dropdown')) {
+                avatarDropdown.classList.remove('show');
+                selectedAvatar.setAttribute('aria-expanded', 'false');
+            }
         });
     </script>
 
