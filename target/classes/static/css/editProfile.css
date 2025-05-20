@@ -27,13 +27,21 @@ form {
 /* Campi di input */
 form input[type="text"],
 form input[type="email"],
-form input[type="checkbox"] {
+form select {
     padding: 10px;
     margin: 10px 0;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 100%;
+    box-sizing: border-box;
+}
+
+/* Checkbox */
+form input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.2);
+    vertical-align: middle;
 }
 
 /* Pulsante per invio */
@@ -84,6 +92,7 @@ a.back-button:hover {
     display: flex;
     align-items: center;
     cursor: pointer;
+    user-select: none;
 }
 
 .custom-dropdown .dropdown-selected img {
@@ -103,6 +112,8 @@ a.back-button:hover {
     border-radius: 5px;
     background-color: white;
     z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .custom-dropdown .dropdown-options.show {
@@ -135,7 +146,7 @@ a.back-button:hover {
 
     form input[type="text"],
     form input[type="email"],
-    form input[type="checkbox"] {
+    form select {
         font-size: 14px;
     }
 
