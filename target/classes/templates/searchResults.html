@@ -13,7 +13,7 @@
     <h1>Risultati per: "<span th:text="${query}"></span>"</h1>
 
     <div class="no-results" th:if="${#lists.isEmpty(results)}">
-      <p>Nessun risultato trovato
+      <p>🙅🏼‍♂️ Nessun risultato trovato
         <span th:if="${corsoDiStudiSelezionato != null && corsoDiStudiSelezionato != 'Tutti'}">
           nel corso di studi <strong th:text="${corsoDiStudiSelezionato}"></strong>
         </span>
