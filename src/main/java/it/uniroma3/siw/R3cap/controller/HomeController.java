@@ -2,6 +2,7 @@ package it.uniroma3.siw.R3cap.controller;
 
 import it.uniroma3.siw.R3cap.model.User;
 import it.uniroma3.siw.R3cap.repository.UserRepository;
+import it.uniroma3.siw.R3cap.repository.VoteRepository; // Importa VoteRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,9 @@ public class HomeController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private VoteRepository voteRepository; // Inietta VoteRepository
 
     @GetMapping("/")
     public String home(Model model, Principal principal) {
@@ -40,7 +44,15 @@ public class HomeController {
             String username = principal.getName();
             Optional<User> optionalUtente = userRepository.findByUsername(username);
             if (optionalUtente.isPresent()) {
-                model.addAttribute("utente", optionalUtente.get());
+                User utente = optionalUtente.get();
+                model.addAttribute("utente", utente);
+
+                // Calcola i punti totali per l'utente loggato
+                int totalPoints = voteRepository.findByNote_Uploader(utente)
+                                                .stream()
+                                                .mapToInt(v -> v.getValue())
+                                                .sum();
+                model.addAttribute("totalPoints", totalPoints); // Aggiungi i punti al modello
             }
         }
         return "profile";
@@ -80,7 +92,4 @@ public class HomeController {
         }
         return "redirect:/profile";
     }
-
-    
-
 }

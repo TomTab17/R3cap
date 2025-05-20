@@ -10,8 +10,12 @@
     <div class="profile-wrapper">
         <div class="profile-container">
             <div class="profile-card">
-                <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}"
-                     alt="Immagine Profilo" class="profile-pic-large" />
+                <div class="profile-pic-container"> <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}"
+                         alt="Immagine Profilo" class="profile-pic-large" />
+                    <div class="total-points">
+                        <span th:text="${totalPoints != null ? totalPoints : 0}">0</span> Punti 🔥
+                    </div>
+                </div>
 
                 <div class="profile-info">
                     <h2 th:text="${utente.nome} + ' ' + ${utente.cognome}"></h2>
