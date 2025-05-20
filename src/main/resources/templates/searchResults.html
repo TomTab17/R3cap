@@ -1,124 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
-    <meta charset="UTF-8" />
-    <title>Risultati ricerca</title>
-    <link rel="stylesheet" th:href="@{/css/searchResults.css}" />
-    <meta name="_csrf" th:content="${_csrf.token}" />
-    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+  <meta charset="UTF-8" />
+  <title>Risultati ricerca</title>
+  <link rel="stylesheet" th:href="@{/css/searchResults.css}" />
+  <meta name="_csrf" th:content="${_csrf.token}" />
+  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="container">
     <h1>Risultati per: "<span th:text="${query}"></span>"</h1>
 
-    <!-- Overlay centrato per nessun risultato -->
-    <div class="overlay-message" th:if="${#lists.isEmpty(results)}">
-        <p>
-            🙅🏼‍♂️ Nessun appunto trovato per la tua ricerca
-            <span th:if="${corsoDiStudiSelezionato != null && corsoDiStudiSelezionato != 'Tutti'}">
-                nel corso di studi di <span th:text="${corsoDiStudiSelezionato}"></span>
-            </span>
-            <span th:if="${corsoDiStudiSelezionato == 'Tutti'}">
-                in tutti i corsi di studio
-            </span>
-            <span th:if="${corsoDiStudiSelezionato == null}">
-                nel tuo corso di studi di <span th:text="${corsoDiStudiUtente}"></span>
-            </span>
-        </p>
+    <div class="no-results" th:if="${#lists.isEmpty(results)}">
+      <p>Nessun risultato trovato
+        <span th:if="${corsoDiStudiSelezionato != null && corsoDiStudiSelezionato != 'Tutti'}">
+          nel corso di studi <strong th:text="${corsoDiStudiSelezionato}"></strong>
+        </span>
+        <span th:if="${corsoDiStudiSelezionato == 'Tutti'}">in tutti i corsi di studio</span>
+        <span th:if="${corsoDiStudiSelezionato == null}">
+          nel tuo corso di studi <strong th:text="${corsoDiStudiUtente}"></strong>
+        </span>
+      </p>
     </div>
 
     <div class="results-grid">
-        <div th:each="note : ${results}" class="note-card" th:attr="data-note-id=${note.id}">
-            <h2 th:text="${note.title}"></h2>
+      <div class="note-card" th:each="note : ${results}" th:attr="data-note-id=${note.id}">
+        <h2 th:text="${note.title}"></h2>
 
-            <div th:if="${note != null and note.previewImagePath != null}">
-                <div class="preview-container">
-                    <img th:src="@{${note.previewImagePath}}"
-                         th:attr="data-src=@{/previews/${note.previewImagePath}}"
-                         alt="Anteprima PDF" class="preview-image"
-                         onload="loadImageWithToken(this)" />
-                </div>
-            </div>
-
-            <p th:text="${note.description}"></p>
-            <p th:text="'Caricato da: ' + ${note.uploader.username}"></p>
-            <p th:text="'Caricato il: ' + ${#temporals.format(note.uploadDate, 'dd/MM/yyyy HH:mm')}"></p>
-            <a th:href="@{'/notes/download/' + ${note.id}}" download class="download-link">📄 Scarica</a>
-
-            <!-- 🔽 Sezione voti -->
-            <div class="vote-section" th:attr="data-note-id=${note.id}">
-                <button class="vote-btn" data-value="1" th:classappend="${votes[note.id] == 1} ? ' upvoted' : ''">⬆</button>
-                <button class="vote-btn" data-value="-1" th:classappend="${votes[note.id] == -1} ? ' downvoted' : ''">⬇</button>
-            </div>
-
-            <hr/>
+        <div th:if="${note.previewImagePath != null}" class="preview">
+          <img th:src="@{${note.previewImagePath}}" alt="Anteprima" />
         </div>
+
+        <p class="description" th:text="${note.description}"></p>
+
+        <div class="meta">
+          <span>👤 <strong th:text="${note.uploader.username}"></strong></span>
+          <span>🕒 <span th:text="${#temporals.format(note.uploadDate, 'dd/MM/yyyy HH:mm')}"></span></span>
+        </div>
+
+        <div class="actions">
+          <a th:href="@{'/notes/download/' + ${note.id}}" download class="btn-download">Scarica PDF</a>
+
+          <div class="vote-buttons" th:attr="data-note-id=${note.id}">
+            <button class="vote up" data-value="1" th:classappend="${votes[note.id] == 1} ? ' active' : ''">⬆</button>
+            <button class="vote down" data-value="-1" th:classappend="${votes[note.id] == -1} ? ' active' : ''">⬇</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <a th:href="@{/}" class="back-link">Torna alla home 🏠</a>
+    <div class="footer">
+      <a th:href="@{/}" class="back-link">Torna alla Home 🏠</a>
+    </div>
+  </div>
 
-    <script>
-        // Funzione per caricare l'immagine con il token
-        function loadImageWithToken(imageElement) {
-            var token = /*[[${_csrf.token}]]*/ ''; // Ottieni il token CSRF da Thymeleaf
-            var src = imageElement.getAttribute('data-src'); // Ottieni il percorso dell'immagine
+  <script>
+    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
-            if (token && src) {
-                var img = new Image();
-                img.src = src;
-                img.onload = function () {
-                    imageElement.src = src;
-                };
-                img.onerror = function () {
-                    console.error("Errore nel caricamento dell'immagine.");
-                };
+    document.querySelectorAll('.vote-buttons').forEach(section => {
+      const noteId = section.getAttribute('data-note-id');
+
+      section.querySelectorAll('.vote').forEach(button => {
+        button.addEventListener('click', function () {
+          const value = this.getAttribute('data-value');
+
+          fetch('/notes/vote', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              [header]: token
+            },
+            body: new URLSearchParams({ noteId, value })
+          }).then(response => {
+            if (response.ok) {
+              section.querySelectorAll('.vote').forEach(btn => btn.classList.remove('active'));
+              this.classList.add('active');
             }
-        }
-
-        // AJAX per votazione senza ricaricare la pagina
-        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-        document.querySelectorAll('.vote-section').forEach(section => {
-            const noteId = section.getAttribute('data-note-id');
-            const upvoteBtn = section.querySelector('button[data-value="1"]');
-            const downvoteBtn = section.querySelector('button[data-value="-1"]');
-
-            section.querySelectorAll('.vote-btn').forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const value = this.getAttribute('data-value');
-
-                    fetch('/notes/vote', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            [header]: token
-                        },
-                        body: new URLSearchParams({
-                            noteId: noteId,
-                            value: value
-                        })
-                    })
-                    .then(response => {
-                        if (!response.ok) throw new Error('Errore nella votazione');
-                        return response.text();
-                    })
-                    .then(data => {
-                        // Aggiorna colore bottoni in base al voto inviato
-                        if (value === '1') {
-                            upvoteBtn.classList.add('upvoted');
-                            downvoteBtn.classList.remove('downvoted');
-                        } else if (value === '-1') {
-                            downvoteBtn.classList.add('downvoted');
-                            upvoteBtn.classList.remove('upvoted');
-                        }
-                    })
-                    .catch(error => {
-                        alert('Errore durante il voto: ' + error.message);
-                    });
-                });
-            });
+          });
         });
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
