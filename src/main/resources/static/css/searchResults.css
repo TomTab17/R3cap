@@ -38,6 +38,18 @@ h1 {
   gap: 30px;
 }
 
+/* --- animazione entrata --- */
+@keyframes slideUpFadeIn {
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .note-card {
   background-color: #ffffff;
   border-radius: 16px;
@@ -47,6 +59,12 @@ h1 {
   flex-direction: column;
   gap: 12px;
   transition: all 0.2s ease;
+  
+  opacity: 0; /* invisibile all'inizio */
+}
+
+.note-card.animate-in {
+  animation: slideUpFadeIn 0.6s ease-out forwards;
 }
 
 .note-card:hover {
@@ -58,6 +76,7 @@ h1 {
   font-size: 1.4em;
   color: #2c3e50;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .preview {
