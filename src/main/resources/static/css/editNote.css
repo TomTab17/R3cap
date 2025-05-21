@@ -1,0 +1,178 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(145deg, #123C7B, #1e5799);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.edit-note-wrapper {
+    width: 100%;
+    max-width: 700px;
+    padding: 2rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+form {
+    width: 100%;
+    padding: 2.5rem;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-weight: 600;
+    color: #123C7B;
+    font-size: 1.05rem;
+}
+
+form input[type="text"],
+form input[type="file"],
+form textarea {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 0.8rem;
+    border: 1px solid #c9d8e5;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background-color: #fcfdff;
+}
+
+form input[type="text"]:focus,
+form input[type="file"]:focus,
+form textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+    background-color: #ffffff;
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 150px;
+    line-height: 1.6;
+}
+
+form input[type="file"] {
+    padding: 0.75rem;
+}
+
+/* --- Pulsanti --- */
+
+.button {
+    padding: 0.9rem 2rem;
+    border-radius: 999px; /* Rendi i bordi più arrotondati per un look "pill" */
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+    margin-top: 0;
+    text-decoration: none; /* Rimuove la sottolineatura per i link che sembrano pulsanti */
+    display: inline-flex; /* Permette allineamento verticale per testo e icona se volessi aggiungerle */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Pulsante Salva */
+.button-save {
+    background-color: #28a745; /* Verde per salvare */
+    color: white;
+    border: none;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2); /* Ombra più specifica per il verde */
+}
+
+.button-save:hover {
+    background-color: #218838;
+    box-shadow: 0 6px 12px rgba(40, 167, 69, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Pulsante Annulla */
+.button-cancel {
+    background-color: #f8f9fa; /* Grigio chiaro per annullare */
+    color: #6c757d; /* Testo grigio scuro */
+    border: 2px solid #ced4da; /* Bordo sottile grigio */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.button-cancel:hover {
+    background-color: #e2e6ea;
+    color: #495057;
+    border-color: #dae0e5;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Gruppo pulsanti */
+.button-group-inline {
+    display: flex;
+    gap: 1.5rem; /* Aumento lo spazio tra i pulsanti */
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .edit-note-wrapper {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    form {
+        padding: 1.5rem;
+        gap: 0.8rem;
+    }
+
+    form input[type="text"],
+    form input[type="file"],
+    form textarea {
+        padding: 0.8rem 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    form textarea {
+        min-height: 120px;
+    }
+
+    .button {
+        width: 100%;
+        margin-top: 0.8rem;
+        font-size: 1rem; /* Ridimensiona il testo del pulsante su schermi piccoli */
+        padding: 0.8rem 1.5rem; /* Adatta il padding */
+    }
+
+    .button-group-inline {
+        flex-direction: column;
+        gap: 0.8rem; /* Riduci il gap in colonna */
+    }
+}

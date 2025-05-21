@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Profilo di <span th:text="${utente.nome} + ' ' + ${utente.cognome}"></span></title>
+    <title th:text="'Profilo di ' + ${utente.nome} + ' ' + ${utente.cognome}">Profilo di Nome Cognome</title>
     <link rel="stylesheet" th:href="@{/css/profile.css}" />
 </head>
 <body>
@@ -10,7 +10,8 @@
     <div class="profile-wrapper">
         <div class="profile-container">
             <div class="profile-card">
-                <div class="profile-pic-container"> <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}"
+                <div class="profile-pic-container">
+                    <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}"
                          alt="Immagine Profilo" class="profile-pic-large" />
                     <div class="total-points">
                         <span th:text="${totalPoints != null ? totalPoints : 0}">0</span> Punti 🔥
@@ -29,6 +30,28 @@
                 <a href="/" class="button back">🏠 Torna alla Home</a>
                 <a th:href="@{/profile/edit}" class="button edit">✏️ Modifica Profilo</a>
             </div>
+
+            <section class="user-notes">
+                <h2>I tuoi R3cap ⬇️</h2>
+                <div th:if="${#lists.isEmpty(userNotes)}" class="no-notes-message">
+                    <p>Non hai ancora caricato nessun R3cap.</p>
+                </div>
+                <div class="notes-list-container" th:unless="${#lists.isEmpty(userNotes)}">
+                    <div class="note-list-item" th:each="note : ${userNotes}">
+                        <div class="note-details">
+                            <h3 class="note-title" th:text="${note.title}">Titolo della Nota</h3>
+                            <p class="note-description" th:text="${note.description}">Breve descrizione della nota per capire di cosa si tratta.</p>
+                        </div>
+                        <div class="note-actions">
+                            <a th:href="@{/notes/edit/{id}(id=${note.id})}" class="action-button edit-note">Modifica</a>
+                            <form th:action="@{/notes/delete/{id}(id=${note.id})}" method="post" onsubmit="return confirm('Sei sicuro di voler eliminare questa nota?');">
+                                <button type="submit" class="action-button delete-note">Elimina</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
     </div>
 

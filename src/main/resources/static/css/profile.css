@@ -5,17 +5,17 @@ body {
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(145deg, #123C7B, #1e5799);
     color: #333;
-    min-height: 100vh;
+    min-height: 10vh; /* Riduci min-height per schermi più piccoli */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Allinea in alto anziché al centro per dare spazio */
+    padding-top: 2rem; /* Spazio dall'alto */
 }
 
 /* Wrapper to center vertically */
 .profile-wrapper {
     width: 100%;
-    padding: 2rem;
-    padding-bottom: 10rem;
+    padding: 0 2rem 5rem; /* Riduci il padding inferiore */
     box-sizing: border-box;
     display: flex;
     justify-content: center;
@@ -28,7 +28,7 @@ body {
     padding: 2rem;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    max-width: 600px;
+    max-width: 800px; /* Aumentato il max-width per contenere meglio le note */
     width: 100%;
     text-align: center;
 }
@@ -43,9 +43,9 @@ body {
 
 /* Contenitore per immagine e punti */
 .profile-pic-container {
-    position: relative; /* Per posizionare i punti relativamente a questo container */
+    position: relative;
     margin-bottom: 1rem;
-    display: flex; /* Per centrare l'immagine e i punti orizzontalmente se necessario */
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -58,7 +58,7 @@ body {
     object-fit: cover;
     border: 5px solid #007bff;
     box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
-    margin-bottom: 0.5rem; /* Riduci il margine inferiore dell'immagine */
+    margin-bottom: 0.5rem;
 }
 
 /* Punti totali */
@@ -70,10 +70,7 @@ body {
     font-weight: bold;
     font-size: 0.9em;
     box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4);
-    /* Puoi usare position: absolute; per un posizionamento più preciso se preferisci */
-    /* top: -10px; right: -10px; */
 }
-
 
 /* Info */
 .profile-info h2 {
@@ -94,6 +91,7 @@ body {
     justify-content: center;
     gap: 1rem;
     flex-wrap: wrap;
+    margin-bottom: 2rem;
 }
 
 /* Buttons */
@@ -138,6 +136,125 @@ body {
     border-color: #218838;
 }
 
+/* --- Stile per la sezione note caricate (Lista di Card) --- */
+.user-notes {
+    margin-top: 2.5rem;
+    text-align: left;
+}
+
+.user-notes h2 {
+    color: #123C7B;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.notes-list-container {
+    display: flex;
+    flex-direction: column; /* Stack le card verticalmente */
+    gap: 1rem; /* Spazio tra le card delle note */
+}
+
+.note-list-item {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 1.2rem 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center; /* Allinea verticalmente gli elementi */
+    justify-content: space-between; /* Spazio tra dettagli e azioni */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e0e6ed; /* Bordo sottile */
+}
+
+.note-list-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15);
+}
+
+.note-details {
+    flex-grow: 1; /* Permette ai dettagli di occupare lo spazio rimanente */
+    margin-right: 1rem; /* Spazio tra dettagli e azioni */
+    min-width: 0; /* Permette al contenuto di restringersi */
+}
+
+.note-title {
+    font-size: 1.2rem;
+    color: #007bff;
+    margin: 0 0 0.4rem 0;
+    font-weight: 600;
+    white-space: nowrap; /* Impedisce al titolo di andare a capo */
+    overflow: hidden; /* Nasconde l'eccesso */
+    text-overflow: ellipsis; /* Aggiunge i puntini di sospensione */
+}
+
+.note-description {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0;
+    white-space: nowrap; /* Impedisce alla descrizione di andare a capo */
+    overflow: hidden; /* Nasconde l'eccesso */
+    text-overflow: ellipsis; /* Aggiunge i puntini di sospensione */
+}
+
+.note-actions {
+    display: flex;
+    gap: 0.6rem; /* Spazio tra i bottoni di azione */
+    flex-shrink: 0; /* Impedisce ai bottoni di restringersi */
+}
+
+.action-button {
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.action-button.edit-note {
+    background-color: #007bff;
+    color: white;
+}
+
+.action-button.edit-note:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+.action-button.delete-note {
+    background-color: #dc3545;
+    color: white;
+}
+
+.action-button.delete-note:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+}
+
+/* Messaggio se non ci sono note */
+.no-notes-message {
+    text-align: center;
+    margin-top: 2rem;
+    color: #666;
+    font-style: italic;
+    font-size: 1.1rem;
+    padding: 1.5rem;
+    background-color: #f0f8ff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1);
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .profile-container {
@@ -152,5 +269,32 @@ body {
     .button {
         width: 100%;
         min-width: auto;
+    }
+
+    .note-list-item {
+        flex-direction: column; /* Stack elementi verticalmente */
+        align-items: flex-start; /* Allinea a sinistra */
+        padding: 1rem;
+    }
+
+    .note-details {
+        margin-right: 0;
+        margin-bottom: 0.8rem; /* Spazio tra dettagli e azioni */
+        width: 100%;
+    }
+
+    .note-title, .note-description {
+        white-space: normal; /* Permette al testo di andare a capo */
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .note-actions {
+        width: 100%; /* I bottoni occupano tutta la larghezza */
+        justify-content: stretch; /* Allunga i bottoni */
+    }
+
+    .action-button {
+        flex-grow: 1; /* Permette ai bottoni di espandersi */
     }
 }

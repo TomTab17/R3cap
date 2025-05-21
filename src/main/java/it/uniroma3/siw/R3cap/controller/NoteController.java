@@ -208,4 +208,101 @@ public class NoteController {
 
         return "ERROR";
     }
+
+    @GetMapping("/edit/{id}")
+public String editNoteForm(@PathVariable Long id, Model model, Principal principal) {
+    Optional<Note> noteOpt = noteRepository.findById(id);
+    Optional<User> userOpt = getAuthenticatedUser(principal);
+
+    if (noteOpt.isEmpty() || userOpt.isEmpty()) {
+        return "redirect:/profile";
+    }
+
+    Note note = noteOpt.get();
+    User user = userOpt.get();
+
+    // Controlla che la nota appartenga all'utente loggato
+    if (!note.getUploader().getId().equals(user.getId())) {
+        return "redirect:/profile";
+    }
+
+    model.addAttribute("note", note);
+    return "editNote";  // template per editare la nota
+}
+@PostMapping("/edit/{id}")
+public String editNoteSubmit(@PathVariable Long id,
+                             @RequestParam String title,
+                             @RequestParam String description,
+                             @RequestParam(required = false) MultipartFile file,
+                             Principal principal) throws IOException {
+
+    Optional<Note> noteOpt = noteRepository.findById(id);
+    Optional<User> userOpt = getAuthenticatedUser(principal);
+
+    if (noteOpt.isEmpty() || userOpt.isEmpty()) {
+        return "redirect:/profile";
+    }
+
+    Note note = noteOpt.get();
+    User user = userOpt.get();
+
+    if (!note.getUploader().getId().equals(user.getId())) {
+        return "redirect:/profile";
+    }
+
+    note.setTitle(title);
+    note.setDescription(description);
+
+    if (file != null && !file.isEmpty()) {
+        // Sovrascrivi il file e aggiorna il path
+        Files.createDirectories(Paths.get(uploadDir));
+        String originalFilename = Paths.get(file.getOriginalFilename()).getFileName().toString();
+        String sanitizedFilename = originalFilename.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
+        String newFileName = UUID.randomUUID() + "_" + sanitizedFilename;
+        Path path = Paths.get(uploadDir, newFileName);
+
+        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        note.setFilePath(path.toString());
+
+        // (Ri)genera anteprima se vuoi
+        try {
+            String previewPath = PdfPreviewGenerator.generatePreview(
+                path.toFile(),
+                previewDir,
+                String.valueOf(note.getId())
+            );
+            note.setPreviewImagePath(previewPath);
+        } catch (Exception e) {
+            System.err.println("Errore durante la generazione della preview: " + e.getMessage());
+        }
+    }
+
+    noteRepository.save(note);
+    return "redirect:/profile";
+}
+@PostMapping("/delete/{id}")
+public String deleteNote(@PathVariable Long id, Principal principal) {
+    Optional<Note> noteOpt = noteRepository.findById(id);
+    Optional<User> userOpt = getAuthenticatedUser(principal);
+
+    if (noteOpt.isEmpty() || userOpt.isEmpty()) {
+        return "redirect:/profile";
+    }
+
+    Note note = noteOpt.get();
+    User user = userOpt.get();
+
+    if (!note.getUploader().getId().equals(user.getId())) {
+        return "redirect:/profile";
+    }
+
+    // Elimina i voti associati
+    List<Vote> votes = voteRepository.findByNote(note);
+    voteRepository.deleteAll(votes);
+
+    // Elimina la nota
+    noteRepository.delete(note);
+
+    return "redirect:/profile";
+}
 }
