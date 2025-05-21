@@ -300,9 +300,30 @@ public String deleteNote(@PathVariable Long id, Principal principal) {
     List<Vote> votes = voteRepository.findByNote(note);
     voteRepository.deleteAll(votes);
 
-    // Elimina la nota
+    // Elimina il file PDF fisico
+    try {
+        Path pdfPath = Paths.get(note.getFilePath());
+        Files.deleteIfExists(pdfPath);
+    } catch (IOException e) {
+        System.err.println("Errore eliminando file PDF: " + e.getMessage());
+    }
+
+    // Elimina l'immagine di preview fisica
+    try {
+        if (note.getPreviewImagePath() != null) {
+            // La previewImagePath è del tipo "/previews/123.jpg", togli il prefisso "/" e aggiungi il percorso assoluto
+            String previewFileName = note.getPreviewImagePath().replaceFirst("^/", "");
+            Path previewPath = Paths.get("src/main/resources/static", previewFileName);
+            Files.deleteIfExists(previewPath);
+        }
+    } catch (IOException e) {
+        System.err.println("Errore eliminando immagine preview: " + e.getMessage());
+    }
+
+    // Elimina la nota dal DB
     noteRepository.delete(note);
 
     return "redirect:/profile";
 }
+
 }
