@@ -16,7 +16,7 @@ public class Note {
     private String filePath;
     private LocalDateTime uploadDate;
 
-    private String previewImagePath; // ✅ Nuovo campo
+    private String previewImagePath;
 
     @ManyToOne
     private User uploader;

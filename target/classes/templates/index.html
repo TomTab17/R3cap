@@ -4,20 +4,17 @@
     <meta charset="UTF-8">
     <title>Benvenuto su R3cap</title>
 
-    <!-- Aggiungi il link al favicon -->
     <link rel="icon" href="/media/logo.ico" type="image/x-icon">
 
     <link rel="stylesheet" th:href="@{/css/index.css}" />
 </head>
 <body>
 
-    <!-- Titolo -->
     <h1>
         Benvenuto su
         <img th:src="@{/media/logo.png}" alt="Logo R3cap" style="height: 250px;" />
     </h1>
 
-    <!-- Messaggio per utenti non loggati -->
     <div th:if="${utente == null}" class="access-warning">
         <p>Per consultare e caricare appunti su R3cap è necessario accedere</p>
         <div class="auth-buttons">
@@ -26,7 +23,6 @@
         </div>
     </div>
 
-    <!-- Profilo utente in alto a destra (solo se loggato) -->
     <div class="user-profile" th:if="${utente != null}">
         <a th:href="@{/profile}">
             <img th:src="@{${utente.immagineProfilo} != null ? ${utente.immagineProfilo} : '/media/default-profile.png'}" alt="Profilo" class="profile-pic" />
@@ -40,10 +36,8 @@
         </form>
     </div>
 
-    <!-- Corso di studi (solo se loggato) -->
     <p th:if="${utente != null}" th:text="'Il tuo corso di studi: ' + ${corsoDiStudi}" class="corso-di-studi"></p>
 
-    <!-- Form di ricerca (solo se loggato) -->
     <div class="search-form" th:if="${utente != null}">
         <form th:action="@{/notes/search}" method="get" style="display: flex; width: 100%;">
             <input type="text" class="search-input" name="query" placeholder="Cerca il tuo R3cap 📚" required />
@@ -51,7 +45,6 @@
         </form>
     </div>
 
-    <!-- Ricerca avanzata - visibile solo se loggato -->
     <div class="advanced-search-box" th:if="${utente != null}">
         <span class="advanced-search-text">Vuoi ricercare in altri corsi di studio?</span>
         <a th:href="@{/notes/ricerca-avanzata}" class="btn-advanced-search">
@@ -59,19 +52,16 @@
         </a>
     </div>
 
-    <!-- Pulsante per caricare un appunto (solo se loggato) -->
     <div class="upload-note-box" th:if="${utente != null}">
         <a th:href="@{/notes/upload}" class="btn-upload-note">
             📤 Carica un R3cap
         </a>
     </div>
 
-    <!-- 🔥 Classifica utenti (solo se loggato) -->
     <div class="ranking-box" th:if="${utente != null}">
         <a th:href="@{/ranking}" class="btn-ranking">🏆 Classifica utenti</a>
     </div>
 
-    <!-- Messaggio di successo caricamento -->
     <div id="upload-success-message" th:if="${param.uploadSuccess}">
       Caricamento avvenuto con successo 🎉
     </div>

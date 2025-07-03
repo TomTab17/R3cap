@@ -22,12 +22,12 @@ public class AuthController {
         if (success != null) {
             model.addAttribute("successMessage", "Registrazione avvenuta con successo! Effettua il login.");
         }
-        return "login"; // templates/login.html
+        return "login";
     }
 
     @GetMapping("/register")
     public String registerForm() {
-        return "register"; // templates/register.html
+        return "register";
     }
 
     @PostMapping("/register")

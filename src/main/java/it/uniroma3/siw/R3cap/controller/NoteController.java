@@ -114,7 +114,7 @@ public class NoteController {
         model.addAttribute("query", query);
         model.addAttribute("corsoDiStudiUtente", corso);
 
-        // Recupera voti dell'utente per queste note
+        // Recupero voti dell'utente
         User user = optionalUser.get();
         Map<Long, Integer> votesMap = new HashMap<>();
         for (Note note : results) {
@@ -150,7 +150,7 @@ public class NoteController {
         model.addAttribute("query", query);
         model.addAttribute("corsoDiStudiSelezionato", corsoDiStudi);
 
-        // Recupera voti dell'utente per queste note
+        // Recupero voti dell'utente
         User user = optionalUser.get();
         Map<Long, Integer> votesMap = new HashMap<>();
         for (Note note : results) {
@@ -179,7 +179,6 @@ public class NoteController {
                 .body(resource);
     }
 
-    // Metodo per gestire voto via AJAX (risposta semplice)
     @PostMapping("/vote")
     @ResponseBody
     public String voteNote(@RequestParam Long noteId,
@@ -221,13 +220,13 @@ public String editNoteForm(@PathVariable Long id, Model model, Principal princip
     Note note = noteOpt.get();
     User user = userOpt.get();
 
-    // Controlla che la nota appartenga all'utente loggato
+    // Controllo che la nota appartenga all'utente loggato
     if (!note.getUploader().getId().equals(user.getId())) {
         return "redirect:/profile";
     }
 
     model.addAttribute("note", note);
-    return "editNote";  // template per editare la nota
+    return "editNote"; 
 }
 @PostMapping("/edit/{id}")
 public String editNoteSubmit(@PathVariable Long id,
@@ -254,7 +253,7 @@ public String editNoteSubmit(@PathVariable Long id,
     note.setDescription(description);
 
     if (file != null && !file.isEmpty()) {
-        // Sovrascrivi il file e aggiorna il path
+        // Sovrascrivo il file e aggiorno il path
         Files.createDirectories(Paths.get(uploadDir));
         String originalFilename = Paths.get(file.getOriginalFilename()).getFileName().toString();
         String sanitizedFilename = originalFilename.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
@@ -264,7 +263,6 @@ public String editNoteSubmit(@PathVariable Long id,
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         note.setFilePath(path.toString());
 
-        // (Ri)genera anteprima se vuoi
         try {
             String previewPath = PdfPreviewGenerator.generatePreview(
                 path.toFile(),
@@ -296,11 +294,11 @@ public String deleteNote(@PathVariable Long id, Principal principal) {
         return "redirect:/profile";
     }
 
-    // Elimina i voti associati
+    // Elimino i voti associati
     List<Vote> votes = voteRepository.findByNote(note);
     voteRepository.deleteAll(votes);
 
-    // Elimina il file PDF fisico
+    // Elimino il file PDF fisico
     try {
         Path pdfPath = Paths.get(note.getFilePath());
         Files.deleteIfExists(pdfPath);
@@ -308,10 +306,9 @@ public String deleteNote(@PathVariable Long id, Principal principal) {
         System.err.println("Errore eliminando file PDF: " + e.getMessage());
     }
 
-    // Elimina l'immagine di preview fisica
+    // Elimino l'immagine di preview fisica
     try {
         if (note.getPreviewImagePath() != null) {
-            // La previewImagePath è del tipo "/previews/123.jpg", togli il prefisso "/" e aggiungi il percorso assoluto
             String previewFileName = note.getPreviewImagePath().replaceFirst("^/", "");
             Path previewPath = Paths.get("src/main/resources/static", previewFileName);
             Files.deleteIfExists(previewPath);
@@ -320,7 +317,7 @@ public String deleteNote(@PathVariable Long id, Principal principal) {
         System.err.println("Errore eliminando immagine preview: " + e.getMessage());
     }
 
-    // Elimina la nota dal DB
+    // Elimino la nota dal DB
     noteRepository.delete(note);
 
     return "redirect:/profile";

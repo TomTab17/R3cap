@@ -15,7 +15,7 @@ public class Vote {
     @ManyToOne
     private Note note;
 
-    private int value; // 1 = upvote, -1 = downvote
+    private int value;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

@@ -22,14 +22,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/register", "/login", "/", "/css/**", "/media/**").permitAll()  // Permetti l'accesso
-                .anyRequest().authenticated()  // Proteggi tutte le altre pagine
+                .requestMatchers("/register", "/login", "/", "/css/**", "/media/**").permitAll()
+                .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .loginPage("/login")  // Indica la tua login page personalizzata
-                .loginProcessingUrl("/login")  // URL per il login
-                .defaultSuccessUrl("/", true)  // Redirect alla home dopo il login
-                .permitAll()  // Permetti l'accesso alla pagina di login
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/", true)
+                .permitAll()
             )
             .logout(logout -> logout
                 .logoutSuccessUrl("/")

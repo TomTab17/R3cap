@@ -13,27 +13,27 @@ body {
 
 .logo-container {
     position: relative;
-    width: 350px; /* Aumentato per dare più spazio al logo */
-    height: 120px; /* Maggiore altezza per il logo */
-    margin-bottom: 20px; /* Spazio tra il logo e il form */
+    width: 350px;
+    height: 120px;
+    margin-bottom: 20px;
     z-index: 1;
-    background-color: white; /* Riquadro bianco per il logo */
-    padding: 10px; /* Padding per il logo */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombra più leggera */
+    background-color: white; 
+    padding: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
-    align-items: center; /* Centra il logo verticalmente e orizzontalmente */
-    border-radius: 10px; /* Angoli arrotondati */
+    align-items: center;
+    border-radius: 10px; 
 }
 
 .logo {
-    width: 70%; /* Aumentato per far crescere il logo all'interno */
-    height: auto; /* Mantieni il rapporto di aspetto */
+    width: 70%;
+    height: auto;
     transition: transform 0.3s ease-in-out;
 }
 
 .logo:hover {
-    transform: scale(1.05); /* Leggero ingrandimento quando il logo è hoverato */
+    transform: scale(1.05);
 }
 
 .form-container {
@@ -44,8 +44,8 @@ body {
     width: 100%;
     max-width: 400px;
     text-align: center;
-    position: relative; /* Necessario per il posizionamento del logo */
-    z-index: 0; /* Form è sotto al logo */
+    position: relative;
+    z-index: 0;
 }
 
 h2 {
@@ -110,7 +110,7 @@ button:active {
     color: #FF6347;
 }
 
-/* Media Query per dispositivi mobili */
+
 @media (max-width: 600px) {
     .form-container {
         padding: 20px;

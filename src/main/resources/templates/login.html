@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<!-- Aggiungi l'immagine del logo sopra il form con l'effetto di contrasto -->
+
 <div class="logo-container">
     <img th:src="@{/media/logo.png}" alt="Logo" class="logo">
 </div>
@@ -14,12 +14,12 @@
 <div class="form-container">
     <h2>Please sign in</h2>
 
-    <!-- Messaggio di successo (dopo la registrazione) -->
+
     <div th:if="${successMessage}" class="message success">
         <p th:text="${successMessage}"></p>
     </div>
 
-    <!-- Messaggio di errore in caso di login fallito -->
+
     <div th:if="${param.error}" class="message error">
         <p>Credenziali non valide. Riprova.</p>
     </div>

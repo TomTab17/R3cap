@@ -80,11 +80,10 @@ form input[type="file"] {
     padding: 0.75rem;
 }
 
-/* --- Pulsanti --- */
 
 .button {
     padding: 0.9rem 2rem;
-    border-radius: 999px; /* Rendi i bordi più arrotondati per un look "pill" */
+    border-radius: 999px; 
     font-size: 1.1rem;
     font-weight: 600;
     text-align: center;
@@ -93,18 +92,17 @@ form input[type="file"] {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     width: fit-content;
     margin-top: 0;
-    text-decoration: none; /* Rimuove la sottolineatura per i link che sembrano pulsanti */
-    display: inline-flex; /* Permette allineamento verticale per testo e icona se volessi aggiungerle */
+    text-decoration: none; 
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Pulsante Salva */
 .button-save {
-    background-color: #28a745; /* Verde per salvare */
+    background-color: #28a745;
     color: white;
     border: none;
-    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2); /* Ombra più specifica per il verde */
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
 }
 
 .button-save:hover {
@@ -113,11 +111,10 @@ form input[type="file"] {
     transform: translateY(-2px);
 }
 
-/* Pulsante Annulla */
 .button-cancel {
-    background-color: #f8f9fa; /* Grigio chiaro per annullare */
-    color: #6c757d; /* Testo grigio scuro */
-    border: 2px solid #ced4da; /* Bordo sottile grigio */
+    background-color: #f8f9fa; 
+    color: #6c757d; 
+    border: 2px solid #ced4da; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -129,15 +126,13 @@ form input[type="file"] {
     transform: translateY(-2px);
 }
 
-/* Gruppo pulsanti */
 .button-group-inline {
     display: flex;
-    gap: 1.5rem; /* Aumento lo spazio tra i pulsanti */
+    gap: 1.5rem; 
     justify-content: center;
     margin-top: 1.5rem;
 }
 
-/* Responsive */
 @media (max-width: 600px) {
     .edit-note-wrapper {
         padding: 1rem;
@@ -167,12 +162,12 @@ form input[type="file"] {
     .button {
         width: 100%;
         margin-top: 0.8rem;
-        font-size: 1rem; /* Ridimensiona il testo del pulsante su schermi piccoli */
-        padding: 0.8rem 1.5rem; /* Adatta il padding */
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
     }
 
     .button-group-inline {
         flex-direction: column;
-        gap: 0.8rem; /* Riduci il gap in colonna */
+        gap: 0.8rem; 
     }
 }

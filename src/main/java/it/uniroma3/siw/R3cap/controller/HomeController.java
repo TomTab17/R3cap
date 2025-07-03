@@ -3,7 +3,7 @@ package it.uniroma3.siw.R3cap.controller;
 import it.uniroma3.siw.R3cap.model.Note;
 import it.uniroma3.siw.R3cap.model.User;
 import it.uniroma3.siw.R3cap.repository.UserRepository;
-import it.uniroma3.siw.R3cap.repository.VoteRepository; // Importa VoteRepository
+import it.uniroma3.siw.R3cap.repository.VoteRepository;
 import it.uniroma3.siw.R3cap.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ public class HomeController {
     private NoteRepository noteRepository;
 
     @Autowired
-    private VoteRepository voteRepository; // Inietta VoteRepository
+    private VoteRepository voteRepository;
 
     @GetMapping("/")
     public String home(Model model, Principal principal) {

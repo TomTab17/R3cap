@@ -10,14 +10,14 @@ import java.io.IOException;
 
 public class PdfPreviewGenerator {
 
-    // Genera immagine JPG della prima pagina del PDF
+    // Genero immagine JPG della prima pagina del PDF
     public static String generatePreview(File pdfFile, String outputFolder, String previewFileName) throws IOException {
         try (PDDocument document = PDDocument.load(pdfFile)) {
             PDFRenderer pdfRenderer = new PDFRenderer(document);
-            BufferedImage image = pdfRenderer.renderImageWithDPI(0, 150); // pagina 0, 150 dpi
+            BufferedImage image = pdfRenderer.renderImageWithDPI(0, 150);
             File outputFile = new File(outputFolder + File.separator + previewFileName + ".jpg");
             ImageIO.write(image, "jpg", outputFile);
-            return "/previews/" + previewFileName + ".jpg"; // percorso relativo per Thymeleaf
+            return "/previews/" + previewFileName + ".jpg";
         }
     }
 }

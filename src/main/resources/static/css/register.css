@@ -15,10 +15,10 @@ body {
 .form-container {
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 20px;
-    padding: 25px; /* Ridotto il padding per fare spazio */
+    padding: 25px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     width: 100%;
-    max-width: 500px; /* Ridotto la larghezza massima */
+    max-width: 500px;
     text-align: center;
     margin-top: 20px;
     display: flex;
@@ -28,22 +28,22 @@ body {
 }
 
 h2 {
-    font-size: 2rem; /* Ridotto il font per mantenere la coerenza */
+    font-size: 2rem;
     margin-bottom: 20px;
     color: white;
 }
 
 input, select {
     width: 100%;
-    padding: 10px; /* Ridotto un po' il padding */
-    margin: 8px 0; /* Ridotto il margine per fare spazio */
+    padding: 10px;
+    margin: 8px 0;
     border: 2px solid #003366;
     border-radius: 10px;
     background-color: #ffffff;
     color: #003366;
-    font-size: 0.95rem; /* Font leggermente più piccolo */
+    font-size: 0.95rem;
     box-sizing: border-box;
-    min-height: 45px; /* Ridotto il minimo per i campi */
+    min-height: 45px;
 }
 
 input:focus, select:focus {
@@ -54,15 +54,15 @@ input:focus, select:focus {
 button {
     background-color: #003366;
     color: white;
-    padding: 12px 28px; /* Ridotto il padding per rendere il bottone più piccolo */
+    padding: 12px 28px;
     border-radius: 10px;
-    font-size: 1.1rem; /* Font leggermente più piccolo */
+    font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
     border: none;
     transition: background-color 0.3s, transform 0.2s;
     width: 100%;
-    margin-top: 18px; /* Ridotto il margine per mantenerlo in proporzione */
+    margin-top: 18px;
 }
 
 button:hover {
@@ -75,10 +75,9 @@ button:active {
     transform: translateY(2px);
 }
 
-/* Checkbox label */
 label {
     color: white;
-    font-size: 0.95rem; /* Font leggermente più piccolo */
+    font-size: 0.95rem;
     margin-top: 10px;
     text-align: left;
     width: 100%;
@@ -94,14 +93,13 @@ input[type="checkbox"] {
     accent-color: #003366;
 }
 
-/* Custom dropdown per la selezione immagine profilo */
 .custom-dropdown {
     width: 100%;
     position: relative;
 }
 
 .dropdown-selected {
-    padding: 10px; /* Ridotto il padding */
+    padding: 10px;
     border: 2px solid #003366;
     border-radius: 10px;
     background-color: #ffffff;
@@ -152,19 +150,18 @@ input[type="checkbox"] {
     color: white;
 }
 
-/* Media Query per i dispositivi mobili */
 @media (max-width: 600px) {
     .form-container {
-        padding: 20px; /* Ridotto il padding */
+        padding: 20px;
         width: 100%;
         max-width: 100%;
     }
 
     h2 {
-        font-size: 1.8rem; /* Font ridotto per dispositivi mobili */
+        font-size: 1.8rem;
     }
 
     input, select, button {
-        font-size: 0.95rem; /* Font ridotto per dispositivi mobili */
+        font-size: 0.95rem;
     }
 }

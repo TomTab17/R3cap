@@ -30,13 +30,13 @@ public class RankingController {
                 voteRepository.findByNote_Uploader(u).stream().mapToInt(v -> v.getValue()).sum() :
                 voteRepository.findByNote_UploaderAndNote_Uploader_CorsoDiStudi(u, corso).stream().mapToInt(v -> v.getValue()).sum();
 
-            // Escludi gli utenti con 0 punti
+            // Escludo gli utenti con 0 punti
             if (score > 0) {
                 ranking.add(new UserScore(u, score));
             }
         }
 
-        // Ordina e prendi i primi 10
+        // Ordino e prendo i primi 10
         ranking.sort((a, b) -> Integer.compare(b.score, a.score));
         model.addAttribute("ranking", ranking.subList(0, Math.min(10, ranking.size())));
         model.addAttribute("corsoDiStudi", corso != null ? corso : "Tutti");
