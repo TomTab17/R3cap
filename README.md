@@ -1,2 +1,2 @@
 # R3cap
- Progetto di sviluppo di un sito web
+Progetto personale per esame di Sistemi Informativi su Web.
