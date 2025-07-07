@@ -13,4 +13,5 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     List<Vote> findByNote(Note note);
     List<Vote> findByNote_Uploader(User uploader);
     List<Vote> findByNote_UploaderAndNote_Uploader_CorsoDiStudi(User uploader, String corsoDiStudi);
+    int countByNoteAndValue(Note note, int value);
 }

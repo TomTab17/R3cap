@@ -114,13 +114,19 @@ public class NoteController {
         model.addAttribute("query", query);
         model.addAttribute("corsoDiStudiUtente", corso);
 
-        // Recupero voti dell'utente
         User user = optionalUser.get();
         Map<Long, Integer> votesMap = new HashMap<>();
+        Map<Long, Integer> upVotesCount = new HashMap<>();
+        Map<Long, Integer> downVotesCount = new HashMap<>();
+
         for (Note note : results) {
             voteRepository.findByVoterAndNote(user, note).ifPresent(vote -> votesMap.put(note.getId(), vote.getValue()));
+            upVotesCount.put(note.getId(), voteRepository.countByNoteAndValue(note, 1));
+            downVotesCount.put(note.getId(), voteRepository.countByNoteAndValue(note, -1));
         }
         model.addAttribute("votes", votesMap);
+        model.addAttribute("upVotesCount", upVotesCount);
+        model.addAttribute("downVotesCount", downVotesCount);
 
         return "searchResults";
     }
@@ -150,13 +156,19 @@ public class NoteController {
         model.addAttribute("query", query);
         model.addAttribute("corsoDiStudiSelezionato", corsoDiStudi);
 
-        // Recupero voti dell'utente
         User user = optionalUser.get();
         Map<Long, Integer> votesMap = new HashMap<>();
+        Map<Long, Integer> upVotesCount = new HashMap<>();
+        Map<Long, Integer> downVotesCount = new HashMap<>();
+
         for (Note note : results) {
             voteRepository.findByVoterAndNote(user, note).ifPresent(vote -> votesMap.put(note.getId(), vote.getValue()));
+            upVotesCount.put(note.getId(), voteRepository.countByNoteAndValue(note, 1));
+            downVotesCount.put(note.getId(), voteRepository.countByNoteAndValue(note, -1));
         }
         model.addAttribute("votes", votesMap);
+        model.addAttribute("upVotesCount", upVotesCount);
+        model.addAttribute("downVotesCount", downVotesCount);
 
         return "searchResults";
     }
@@ -208,119 +220,131 @@ public class NoteController {
         return "ERROR";
     }
 
+    @GetMapping("/api/notes/{noteId}/votes")
+    @ResponseBody
+    public Map<String, Integer> getVoteCounts(@PathVariable Long noteId) {
+        Map<String, Integer> counts = new HashMap<>();
+        Optional<Note> noteOpt = noteRepository.findById(noteId);
+
+        if (noteOpt.isPresent()) {
+            Note note = noteOpt.get();
+            counts.put("upVotes", voteRepository.countByNoteAndValue(note, 1));
+            counts.put("downVotes", voteRepository.countByNoteAndValue(note, -1));
+        } else {
+            counts.put("upVotes", 0);
+            counts.put("downVotes", 0);
+        }
+        return counts;
+    }
+
     @GetMapping("/edit/{id}")
-public String editNoteForm(@PathVariable Long id, Model model, Principal principal) {
-    Optional<Note> noteOpt = noteRepository.findById(id);
-    Optional<User> userOpt = getAuthenticatedUser(principal);
+    public String editNoteForm(@PathVariable Long id, Model model, Principal principal) {
+        Optional<Note> noteOpt = noteRepository.findById(id);
+        Optional<User> userOpt = getAuthenticatedUser(principal);
 
-    if (noteOpt.isEmpty() || userOpt.isEmpty()) {
+        if (noteOpt.isEmpty() || userOpt.isEmpty()) {
+            return "redirect:/profile";
+        }
+
+        Note note = noteOpt.get();
+        User user = userOpt.get();
+
+        if (!note.getUploader().getId().equals(user.getId())) {
+            return "redirect:/profile";
+        }
+
+        model.addAttribute("note", note);
+        return "editNote";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editNoteSubmit(@PathVariable Long id,
+                                 @RequestParam String title,
+                                 @RequestParam String description,
+                                 @RequestParam(required = false) MultipartFile file,
+                                 Principal principal) throws IOException {
+
+        Optional<Note> noteOpt = noteRepository.findById(id);
+        Optional<User> userOpt = getAuthenticatedUser(principal);
+
+        if (noteOpt.isEmpty() || userOpt.isEmpty()) {
+            return "redirect:/profile";
+        }
+
+        Note note = noteOpt.get();
+        User user = userOpt.get();
+
+        if (!note.getUploader().getId().equals(user.getId())) {
+            return "redirect:/profile";
+        }
+
+        note.setTitle(title);
+        note.setDescription(description);
+
+        if (file != null && !file.isEmpty()) {
+            Files.createDirectories(Paths.get(uploadDir));
+            String originalFilename = Paths.get(file.getOriginalFilename()).getFileName().toString();
+            String sanitizedFilename = originalFilename.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
+            String newFileName = UUID.randomUUID() + "_" + sanitizedFilename;
+            Path path = Paths.get(uploadDir, newFileName);
+
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            note.setFilePath(path.toString());
+
+            try {
+                String previewPath = PdfPreviewGenerator.generatePreview(
+                    path.toFile(),
+                    previewDir,
+                    String.valueOf(note.getId())
+                );
+                note.setPreviewImagePath(previewPath);
+            } catch (Exception e) {
+                System.err.println("Errore durante la generazione della preview: " + e.getMessage());
+            }
+        }
+
+        noteRepository.save(note);
         return "redirect:/profile";
     }
 
-    Note note = noteOpt.get();
-    User user = userOpt.get();
+    @PostMapping("/delete/{id}")
+    public String deleteNote(@PathVariable Long id, Principal principal) {
+        Optional<Note> noteOpt = noteRepository.findById(id);
+        Optional<User> userOpt = getAuthenticatedUser(principal);
 
-    // Controllo che la nota appartenga all'utente loggato
-    if (!note.getUploader().getId().equals(user.getId())) {
-        return "redirect:/profile";
-    }
+        if (noteOpt.isEmpty() || userOpt.isEmpty()) {
+            return "redirect:/profile";
+        }
 
-    model.addAttribute("note", note);
-    return "editNote"; 
-}
-@PostMapping("/edit/{id}")
-public String editNoteSubmit(@PathVariable Long id,
-                             @RequestParam String title,
-                             @RequestParam String description,
-                             @RequestParam(required = false) MultipartFile file,
-                             Principal principal) throws IOException {
+        Note note = noteOpt.get();
+        User user = userOpt.get();
 
-    Optional<Note> noteOpt = noteRepository.findById(id);
-    Optional<User> userOpt = getAuthenticatedUser(principal);
+        if (!note.getUploader().getId().equals(user.getId())) {
+            return "redirect:/profile";
+        }
 
-    if (noteOpt.isEmpty() || userOpt.isEmpty()) {
-        return "redirect:/profile";
-    }
-
-    Note note = noteOpt.get();
-    User user = userOpt.get();
-
-    if (!note.getUploader().getId().equals(user.getId())) {
-        return "redirect:/profile";
-    }
-
-    note.setTitle(title);
-    note.setDescription(description);
-
-    if (file != null && !file.isEmpty()) {
-        // Sovrascrivo il file e aggiorno il path
-        Files.createDirectories(Paths.get(uploadDir));
-        String originalFilename = Paths.get(file.getOriginalFilename()).getFileName().toString();
-        String sanitizedFilename = originalFilename.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
-        String newFileName = UUID.randomUUID() + "_" + sanitizedFilename;
-        Path path = Paths.get(uploadDir, newFileName);
-
-        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        note.setFilePath(path.toString());
+        List<Vote> votes = voteRepository.findByNote(note);
+        voteRepository.deleteAll(votes);
 
         try {
-            String previewPath = PdfPreviewGenerator.generatePreview(
-                path.toFile(),
-                previewDir,
-                String.valueOf(note.getId())
-            );
-            note.setPreviewImagePath(previewPath);
-        } catch (Exception e) {
-            System.err.println("Errore durante la generazione della preview: " + e.getMessage());
+            Path pdfPath = Paths.get(note.getFilePath());
+            Files.deleteIfExists(pdfPath);
+        } catch (IOException e) {
+            System.err.println("Errore eliminando file PDF: " + e.getMessage());
         }
-    }
 
-    noteRepository.save(note);
-    return "redirect:/profile";
-}
-@PostMapping("/delete/{id}")
-public String deleteNote(@PathVariable Long id, Principal principal) {
-    Optional<Note> noteOpt = noteRepository.findById(id);
-    Optional<User> userOpt = getAuthenticatedUser(principal);
+        try {
+            if (note.getPreviewImagePath() != null) {
+                String previewFileName = note.getPreviewImagePath().replaceFirst("^/", "");
+                Path previewPath = Paths.get("src/main/resources/static", previewFileName);
+                Files.deleteIfExists(previewPath);
+            }
+        } catch (IOException e) {
+            System.err.println("Errore eliminando immagine preview: " + e.getMessage());
+        }
 
-    if (noteOpt.isEmpty() || userOpt.isEmpty()) {
+        noteRepository.delete(note);
+
         return "redirect:/profile";
     }
-
-    Note note = noteOpt.get();
-    User user = userOpt.get();
-
-    if (!note.getUploader().getId().equals(user.getId())) {
-        return "redirect:/profile";
-    }
-
-    // Elimino i voti associati
-    List<Vote> votes = voteRepository.findByNote(note);
-    voteRepository.deleteAll(votes);
-
-    // Elimino il file PDF fisico
-    try {
-        Path pdfPath = Paths.get(note.getFilePath());
-        Files.deleteIfExists(pdfPath);
-    } catch (IOException e) {
-        System.err.println("Errore eliminando file PDF: " + e.getMessage());
-    }
-
-    // Elimino l'immagine di preview fisica
-    try {
-        if (note.getPreviewImagePath() != null) {
-            String previewFileName = note.getPreviewImagePath().replaceFirst("^/", "");
-            Path previewPath = Paths.get("src/main/resources/static", previewFileName);
-            Files.deleteIfExists(previewPath);
-        }
-    } catch (IOException e) {
-        System.err.println("Errore eliminando immagine preview: " + e.getMessage());
-    }
-
-    // Elimino la nota dal DB
-    noteRepository.delete(note);
-
-    return "redirect:/profile";
-}
-
 }

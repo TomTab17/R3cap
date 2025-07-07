@@ -1,96 +1,96 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <title>Risultati ricerca</title>
-  <link rel="stylesheet" th:href="@{/css/searchResults.css}" />
-  <meta name="_csrf" th:content="${_csrf.token}" />
-  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <title>Risultati ricerca</title>
+    <link rel="stylesheet" th:href="@{/css/searchResults.css}" />
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h1>Risultati per: "<span th:text="${query}"></span>"</h1>
-
-    <div class="no-results" th:if="${#lists.isEmpty(results)}">
-      <p>🙅🏼‍♂️ Nessun risultato trovato
-        <span th:if="${corsoDiStudiSelezionato != null && corsoDiStudiSelezionato != 'Tutti'}">
-          nel corso di studi <strong th:text="${corsoDiStudiSelezionato}"></strong>
-        </span>
-        <span th:if="${corsoDiStudiSelezionato == 'Tutti'}">in tutti i corsi di studio</span>
-        <span th:if="${corsoDiStudiSelezionato == null}">
-          nel tuo corso di studi <strong th:text="${corsoDiStudiUtente}"></strong>
-        </span>
-      </p>
-    </div>
-
-    <div class="results-grid">
-      <div class="note-card" th:each="note : ${results}" th:attr="data-note-id=${note.id}">
-        <h2 th:text="${note.title}"></h2>
-
-        <div th:if="${note.previewImagePath != null}" class="preview">
-          <img th:src="@{${note.previewImagePath}}" alt="Anteprima" />
+    <div class="container">
+        <h1>Risultati per: "<span th:text="${query}"></span>"</h1>
+        <div class="no-results" th:if="${#lists.isEmpty(results)}">
+            <p>🙅🏼‍♂️ Nessun risultato trovato
+                <span th:if="${corsoDiStudiSelezionato != null && corsoDiStudiSelezionato != 'Tutti'}">
+                    nel corso di studi <strong th:text="${corsoDiStudiSelezionato}"></strong>
+                </span>
+                <span th:if="${corsoDiStudiSelezionato == 'Tutti'}">in tutti i corsi di studio</span>
+                <span th:if="${corsoDiStudiSelezionato == null}">
+                    nel tuo corso di studi <strong th:text="${corsoDiStudiUtente}"></strong>
+                </span>
+            </p>
         </div>
-
-        <p class="description" th:text="${note.description}"></p>
-
-        <div class="meta">
-          <span>👤 <strong th:text="${note.uploader.username}"></strong></span>
-          <span>🕒 <span th:text="${#temporals.format(note.uploadDate, 'dd/MM/yyyy HH:mm')}"></span></span>
+        <div class="results-grid">
+            <div class="note-card" th:each="note : ${results}" th:attr="data-note-id=${note.id}">
+                <h2 th:text="${note.title}"></h2>
+                <div th:if="${note.previewImagePath != null}" class="preview">
+                    <img th:src="@{${note.previewImagePath}}" alt="Anteprima" />
+                </div>
+                <p class="description" th:text="${note.description}"></p>
+                <div class="meta">
+                    <span>👤 <strong th:text="${note.uploader.username}"></strong></span>
+                    <span>🕒 <span th:text="${#temporals.format(note.uploadDate, 'dd/MM/yyyy HH:mm')}"></span></span>
+                </div>
+                <div class="actions">
+                    <a th:href="@{'/notes/download/' + ${note.id}}" download class="btn-download">Scarica PDF</a>
+                    <div class="vote-buttons" th:attr="data-note-id=${note.id}">
+                        <div class="vote-control">
+                            <button class="vote up" data-value="1" th:classappend="${votes[note.id] == 1} ? ' active' : ''">⬆</button>
+                            <span class="vote-count up" th:text="${upVotesCount[note.id]} ?: 0">0</span>
+                        </div>
+                        <div class="vote-control">
+                            <button class="vote down" data-value="-1" th:classappend="${votes[note.id] == -1} ? ' active' : ''">⬇</button>
+                            <span class="vote-count down" th:text="${downVotesCount[note.id]} ?: 0">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="actions">
-          <a th:href="@{'/notes/download/' + ${note.id}}" download class="btn-download">Scarica PDF</a>
-
-          <div class="vote-buttons" th:attr="data-note-id=${note.id}">
-            <button class="vote up" data-value="1" th:classappend="${votes[note.id] == 1} ? ' active' : ''">⬆</button>
-            <button class="vote down" data-value="-1" th:classappend="${votes[note.id] == -1} ? ' active' : ''">⬇</button>
-          </div>
+        <div class="footer">
+            <a th:href="@{/}" class="back-link">Torna alla Home 🏠</a>
         </div>
-      </div>
     </div>
+    <script>
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+        document.querySelectorAll('.vote-buttons').forEach(section => {
+            const noteId = section.getAttribute('data-note-id');
+            section.querySelectorAll('.vote').forEach(button => {
+                button.addEventListener('click', function () {
+                    const value = this.getAttribute('data-value');
+                    fetch('/notes/vote', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            [header]: token
+                        },
+                        body: new URLSearchParams({ noteId, value })
+                    }).then(response => {
+                        if (response.ok) {
+                            section.querySelectorAll('.vote').forEach(btn => btn.classList.remove('active'));
+                            this.classList.add('active');
 
-    <div class="footer">
-      <a th:href="@{/}" class="back-link">Torna alla Home 🏠</a>
-    </div>
-  </div>
-
-  <script>
-    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    document.querySelectorAll('.vote-buttons').forEach(section => {
-      const noteId = section.getAttribute('data-note-id');
-
-      section.querySelectorAll('.vote').forEach(button => {
-        button.addEventListener('click', function () {
-          const value = this.getAttribute('data-value');
-
-          fetch('/notes/vote', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              [header]: token
-            },
-            body: new URLSearchParams({ noteId, value })
-          }).then(response => {
-            if (response.ok) {
-              section.querySelectorAll('.vote').forEach(btn => btn.classList.remove('active'));
-              this.classList.add('active');
-            }
-          });
+                            fetch(`/notes/api/notes/${noteId}/votes`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    section.querySelector('.vote-count.up').textContent = data.upVotes;
+                                    section.querySelector('.vote-count.down').textContent = data.downVotes;
+                                });
+                        }
+                    });
+                });
+            });
         });
-      });
-    });
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const cards = document.querySelectorAll('.note-card');
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.classList.add('animate-in');
-        }, index * 100);
-      });
-    });
-  </script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.note-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animate-in');
+                }, index * 100);
+            });
+        });
+    </script>
 </body>
 </html>
